@@ -1,14 +1,16 @@
 "=============================================================================
-" File:         autoload/lh/dev/style/curly_bracket_next_line.vim {{{1
+" File:         autoload/lh/style/curly_bracket_next_line.vim {{{1
 " Author:       Luc Hermitte <EMAIL:luc {dot} hermitte {at} gmail {dot} com>
-"		<URL:http://github.com/LucHermitte/lh-dev>
-" Version:      2.0.0
-let s:k_version = '2.0.0'
+"		<URL:http://github.com/LucHermitte/lh-style>
+" License:      GPLv3 with exceptions
+"               <URL:http://github.com/LucHermitte/lh-style/License.md>
+" Version:      1.0.0
+let s:k_version = '1.0.0'
 " Created:      04th Aug 2017
-" Last Update:  04th Oct 2017
+" Last Update:  17th Oct 2017
 "------------------------------------------------------------------------
 " Description:
-"       lh-dev style-plugin for EditorConfig non-official
+"       lh-style style-plugin for EditorConfig non-official
 "       "curly_bracket_next_line" stylistic option.
 "
 "------------------------------------------------------------------------
@@ -22,13 +24,13 @@ set cpo&vim
 "------------------------------------------------------------------------
 " ## Misc Functions     {{{1
 " # Version {{{2
-function! lh#dev#style#curly_bracket_next_line#version()
+function! lh#style#curly_bracket_next_line#version()
   return s:k_version
 endfunction
 
 " # Debug   {{{2
 let s:verbose = get(s:, 'verbose', 0)
-function! lh#dev#style#curly_bracket_next_line#verbose(...)
+function! lh#style#curly_bracket_next_line#verbose(...)
   if a:0 > 0 | let s:verbose = a:1 | endif
   return s:verbose
 endfunction
@@ -43,40 +45,40 @@ function! s:Verbose(expr, ...)
   endif
 endfunction
 
-function! lh#dev#style#curly_bracket_next_line#debug(expr) abort
+function! lh#style#curly_bracket_next_line#debug(expr) abort
   return eval(a:expr)
 endfunction
 
 
 "------------------------------------------------------------------------
 " ## Internal functions {{{1
-" Function: lh#dev#style#curly_bracket_next_line#__new(name, local_global, ft) {{{2
-function! lh#dev#style#curly_bracket_next_line#__new(name, local_global, ft) abort
-  let style = lh#dev#style#define_group('curly-bracket-next-line', a:name, a:local_global, a:ft)
+" Function: lh#style#curly_bracket_next_line#__new(name, local_global, ft) {{{2
+function! lh#style#curly_bracket_next_line#__new(name, local_global, ft) abort
+  let style = lh#style#define_group('curly-bracket-next-line', a:name, a:local_global, a:ft)
   let s:crt_style = style
   return style
 endfunction
 
-" Function: lh#dev#style#curly_bracket_next_line#_known_list() {{{2
-function! lh#dev#style#curly_bracket_next_line#_known_list() abort
+" Function: lh#style#curly_bracket_next_line#_known_list() {{{2
+function! lh#style#curly_bracket_next_line#_known_list() abort
   return ['none', 'yes', 'no', 'true', 'false', 1, 0]
 endfunction
 
 " ## API      functions {{{1
-" Function: lh#dev#style#curly_bracket_next_line#none(local_global, ft) {{{2
+" Function: lh#style#curly_bracket_next_line#none(local_global, ft) {{{2
 " Permits to clear everything on this topic and to define things manually
 " instead.
-function! lh#dev#style#curly_bracket_next_line#none(local_global, ft) abort
-  let style = lh#dev#style#curly_bracket_next_line#__new('none', a:local_global, a:ft)
+function! lh#style#curly_bracket_next_line#none(local_global, ft) abort
+  let style = lh#style#curly_bracket_next_line#__new('none', a:local_global, a:ft)
   return style
 endfunction
 
-" Function: lh#dev#style#curly_bracket_next_line#use(styles, value, ...) {{{3
-function! lh#dev#style#curly_bracket_next_line#use(styles, value, ...) abort
+" Function: lh#style#curly_bracket_next_line#use(styles, value, ...) {{{3
+function! lh#style#curly_bracket_next_line#use(styles, value, ...) abort
   let input_options = get(a:, 1, {})
-  let [options, local_global, prio, ft] = lh#dev#style#_prepare_options_for_add_style(input_options)
+  let [options, local_global, prio, ft] = lh#style#_prepare_options_for_add_style(input_options)
 
-  let style = lh#dev#style#curly_bracket_next_line#__new(a:value, local_global, ft)
+  let style = lh#style#curly_bracket_next_line#__new(a:value, local_global, ft)
 
   if a:value =~? '\v(true|yes|1)'
     call style.add('{', '\n{', prio)

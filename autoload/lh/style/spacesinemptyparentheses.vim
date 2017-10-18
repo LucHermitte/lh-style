@@ -1,14 +1,17 @@
 "=============================================================================
-" File:         autoload/lh/dev/style/empty_braces.vim            {{{1
+" File:         autoload/lh/style/spacesinemptyparentheses.vim {{{1
 " Author:       Luc Hermitte <EMAIL:luc {dot} hermitte {at} gmail {dot} com>
-"		<URL:http://github.com/LucHermitte/lh-dev>
-" Version:      2.0.0.
-let s:k_version = '200'
-" Created:      06th Oct 2017
-" Last Update:  06th Oct 2017
+"		<URL:http://github.com/LucHermitte/lh-style>
+" License:      GPLv3 with exceptions
+"               <URL:http://github.com/LucHermitte/lh-style/License.md>
+" Version:      1.0.0.
+let s:k_version = '100'
+" Created:      02nd Oct 2017
+" Last Update:  17th Oct 2017
 "------------------------------------------------------------------------
 " Description:
-"       Shall we leave empty braces alone?
+"       lh-style style-plugin for clang-format "SpacesInEmptyParentheses"
+"       stylistic option.
 "
 "------------------------------------------------------------------------
 " History:      «history»
@@ -21,13 +24,13 @@ set cpo&vim
 "------------------------------------------------------------------------
 " ## Misc Functions     {{{1
 " # Version {{{2
-function! lh#dev#style#empty_braces#version()
+function! lh#style#spacesinemptyparentheses#version()
   return s:k_version
 endfunction
 
 " # Debug   {{{2
 let s:verbose = get(s:, 'verbose', 0)
-function! lh#dev#style#empty_braces#verbose(...)
+function! lh#style#spacesinemptyparentheses#verbose(...)
   if a:0 > 0 | let s:verbose = a:1 | endif
   return s:verbose
 endfunction
@@ -42,43 +45,39 @@ function! s:Verbose(expr, ...)
   endif
 endfunction
 
-function! lh#dev#style#empty_braces#debug(expr) abort
+function! lh#style#spacesinemptyparentheses#debug(expr) abort
   return eval(a:expr)
 endfunction
 
-
 "------------------------------------------------------------------------
 " ## Internal functions {{{1
-" Function: lh#dev#style#empty_braces#__new(name, local_global, ft) {{{2
-function! lh#dev#style#empty_braces#__new(name, local_global, ft) abort
-  let style = lh#dev#style#define_group('empty_braces', a:name, a:local_global, a:ft)
+" Function: lh#style#spacesinemptyparentheses#__new(name, local_global, ft) {{{2
+function! lh#style#spacesinemptyparentheses#__new(name, local_global, ft) abort
+  let style = lh#style#define_group('spaces.brackets.cf.in_empty', a:name, a:local_global, a:ft)
   let s:crt_style = style
   return style
 endfunction
 
-" Function: lh#dev#style#empty_braces#_known_list() {{{2
-function! lh#dev#style#empty_braces#_known_list() abort
-  return ['none', 'nl', 'space', 'empty']
+" Function: lh#style#spacesinemptyparentheses#_known_list() {{{2
+function! lh#style#spacesinemptyparentheses#_known_list() abort
+  return ['none', 'yes', 'no', 'true', 'false', 1, 0]
 endfunction
-
 
 "------------------------------------------------------------------------
 " ## API      functions {{{1
-" Function: lh#dev#style#empty_braces#use(styles, value, ...) {{{2
-function! lh#dev#style#empty_braces#use(styles, value, ...) abort
+" Function: lh#style#spacesinemptyparentheses#use(styles, value, ...) {{{2
+let s:k_pattern = '(\s*\%('.lh#marker#txt('.\{-}').'\|!cursorhere!\|!mark!\)\zs\ze\s*)'
+function! lh#style#spacesinemptyparentheses#use(styles, value, ...) abort
   let input_options = get(a:, 1, {})
-  let [options, local_global, prio, ft] = lh#dev#style#_prepare_options_for_add_style(input_options)
+  let [options, local_global, prio, ft] = lh#style#_prepare_options_for_add_style(input_options)
 
-  let style = lh#dev#style#empty_braces#__new(a:value, local_global, ft)
-  if     a:value =~? 'empty'
-    call style.add('{\_s*}', '{}', prio+20)
-  elseif a:value =~? 'nl'
-    call style.add('{\_s*}', '{\n}', prio+20)
-  else " space
-    call style.add('{\_s*}', '{ }', prio+20)
+  let style = lh#style#spacesinemptyparentheses#__new(a:value, local_global, ft)
+  if     a:value =~? 'yes\|true\|1'
+    call style.add(s:k_pattern, ' ' , prio)
+  else " no
+    call style.add(s:k_pattern, '' , prio)
   endif
 endfunction
-
 
 "------------------------------------------------------------------------
 " }}}1

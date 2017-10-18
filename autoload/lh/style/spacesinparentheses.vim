@@ -1,15 +1,17 @@
 "=============================================================================
-" File:         autoload/lh/dev/style/spacesbeforeparens.vim      {{{1
+" File:         autoload/lh/style/spacesinparentheses.vim     {{{1
 " Author:       Luc Hermitte <EMAIL:luc {dot} hermitte {at} gmail {dot} com>
-"		<URL:http://github.com/LucHermitte/lh-dev>
-" Version:      2.0.0.
-let s:k_version = '200'
+"		<URL:http://github.com/LucHermitte/lh-style>
+" License:      GPLv3 with exceptions
+"               <URL:http://github.com/LucHermitte/lh-style/License.md>
+" Version:      1.0.0.
+let s:k_version = '100'
 " Created:      02nd Oct 2017
-" Last Update:  04th Oct 2017
+" Last Update:  17th Oct 2017
 "------------------------------------------------------------------------
 " Description:
-"       lh-dev style-plugin for clang-format
-"       "SpacesBeforeParens" stylistic option.
+"       lh-style style-plugin for clang-format "SpacesInParentheses"
+"       stylistic option.
 "
 "------------------------------------------------------------------------
 " History:      «history»
@@ -22,13 +24,13 @@ set cpo&vim
 "------------------------------------------------------------------------
 " ## Misc Functions     {{{1
 " # Version {{{2
-function! lh#dev#style#spacesbeforeparens#version()
+function! lh#style#spacesinparentheses#version()
   return s:k_version
 endfunction
 
 " # Debug   {{{2
 let s:verbose = get(s:, 'verbose', 0)
-function! lh#dev#style#spacesbeforeparens#verbose(...)
+function! lh#style#spacesinparentheses#verbose(...)
   if a:0 > 0 | let s:verbose = a:1 | endif
   return s:verbose
 endfunction
@@ -43,39 +45,38 @@ function! s:Verbose(expr, ...)
   endif
 endfunction
 
-function! lh#dev#style#spacesbeforeparens#debug(expr) abort
+function! lh#style#spacesinparentheses#debug(expr) abort
   return eval(a:expr)
 endfunction
 
 "------------------------------------------------------------------------
 " ## Internal functions {{{1
-" Function: lh#dev#style#spacesbeforeparens#__new(name, local_global, ft) {{{2
-function! lh#dev#style#spacesbeforeparens#__new(name, local_global, ft) abort
-  let style = lh#dev#style#define_group('spaces.brackets.cf.before', a:name, a:local_global, a:ft)
+" Function: lh#style#spacesinparentheses#__new(name, local_global, ft) {{{2
+function! lh#style#spacesinparentheses#__new(name, local_global, ft) abort
+  let style = lh#style#define_group('spaces.brackets.cf.inside', a:name, a:local_global, a:ft)
   let s:crt_style = style
   return style
 endfunction
 
-" Function: lh#dev#style#spacesbeforeparens#_known_list() {{{2
-function! lh#dev#style#spacesbeforeparens#_known_list() abort
-  return ['none', 'always', 'never', 'control-statements']
+" Function: lh#style#spacesinparentheses#_known_list() {{{2
+function! lh#style#spacesinparentheses#_known_list() abort
+  return ['none', 'yes', 'no', 'true', 'false', 1, 0]
 endfunction
-
 "------------------------------------------------------------------------
 " ## API      functions {{{1
-" Function: lh#dev#style#spacesbeforeparens#use(styles, value, ...) {{{2
-function! lh#dev#style#spacesbeforeparens#use(styles, value, ...) abort
+" Function: lh#style#spacesinparentheses#use(styles, value, ...) {{{2
+function! lh#style#spacesinparentheses#use(styles, value, ...) abort
   let input_options = get(a:, 1, {})
-  let [options, local_global, prio, ft] = lh#dev#style#_prepare_options_for_add_style(input_options)
+  let [options, local_global, prio, ft] = lh#style#_prepare_options_for_add_style(input_options)
 
-  let style = lh#dev#style#spacesbeforeparens#__new(a:value, local_global, ft)
-  if     a:value =~? 'always'
-    call style.add('\s*(' , ' (' , prio)
-  elseif a:value =~? 'never'
-    call style.add('\s*(' , '(' , prio)
-  else " "control statements"
-    call style.add('\%(\<\%(if\|while\|switch\|for\|catch\)\>\)\@<!\s*(', '('  , prio)
-    call style.add('\<\%(if\|while\|switch\|for\|catch\)\>\zs\s*('      , ' (' , prio)
+  let style = lh#style#spacesinparentheses#__new(a:value, local_global, ft)
+  if     a:value =~? 'yes\|true\|1'
+    call style.add('(\s*' , '( ' , prio)
+    call style.add('\s*)' , ' )' , prio)
+  elseif a:value =~? 'none'
+  else " no
+    call style.add('(\s*' , '('  , prio)
+    call style.add('\s*)' , ')'  , prio)
   endif
 endfunction
 

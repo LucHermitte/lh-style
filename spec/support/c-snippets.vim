@@ -1,11 +1,13 @@
 "=============================================================================
 " File:         spec/support/c-snippets.vim                       {{{1
 " Author:       Luc Hermitte <EMAIL:luc {dot} hermitte {at} gmail {dot} com>
-"		<URL:http://github.com/LucHermitte/lh-dev>
-" Version:      2.0.0.
-let s:k_version = '200'
+"		<URL:http://github.com/LucHermitte/lh-style>
+" License:      GPLv3 with exceptions
+"               <URL:http://github.com/LucHermitte/lh-style/License.md>
+" Version:      1.0.0.
+let s:k_version = '100'
 " Created:      09th Aug 2017
-" Last Update:  09th Aug 2017
+" Last Update:  17th Oct 2017
 "------------------------------------------------------------------------
 " Description:
 "       Support definitions for lh-deb vimrunner tests
@@ -33,7 +35,7 @@ function! LH_cpp_snippets_def_abbr(key, expr) abort
   else
     let expr = a:expr
   endif
-  let rhs = lh#dev#style#apply(expr)
+  let rhs = lh#style#apply(expr)
   return lh#map#insert_seq(a:key, rhs)
 endfunction
 

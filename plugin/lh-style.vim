@@ -1,26 +1,26 @@
 "=============================================================================
-" File:         plugin/dev.vim                                    {{{1
+" File:         plugin/lh-style.vim                                    {{{1
 " Author:       Luc Hermitte <EMAIL:hermitte {at} free {dot} fr>
 "               <URL:http://github.com/LucHermitte>
 " License:      GPLv3 with exceptions
-"               <URL:http://github.com/LucHermitte/lh-dev/License.md>
-" Version:      1.3.0
-let s:k_version = 130
+"               <URL:http://github.com/LucHermitte/lh-style/License.md>
+" Version:      1.0.0
+let s:k_version = 100
 " Created:      31st May 2010
-" Last Update:  04th Oct 2017
+" Last Update:  17th Oct 2017
 "------------------------------------------------------------------------
 " Description:
-"       Global commands and definitions of lh-dev
+"       Global commands and definitions of lh-style
 " }}}1
 "=============================================================================
 
 " Avoid global reinclusion {{{1
-if &cp || (exists("g:loaded_dev")
-      \ && (g:loaded_dev >= s:k_version)
-      \ && !exists('g:force_reload_dev'))
+if &cp || (exists("g:loaded_lh_style")
+      \ && (g:loaded_lh_style >= s:k_version)
+      \ && !exists('g:force_reload_lh_style'))
   finish
 endif
-let g:loaded_dev = s:k_version
+let g:loaded_lh_style = s:k_version
 let s:cpo_save=&cpo
 set cpo&vim
 " Avoid global reinclusion }}}1
@@ -32,40 +32,40 @@ command! -nargs=1 -range -complete=custom,s:CompleteConvertNames
       \ ConvertNames <line1>,<line2>call s:ConvertNames(<f-args>)
 
 command! -nargs=+
-      \ AddStyle call lh#dev#style#_add(<f-args>)
+      \ AddStyle call lh#style#_add(<f-args>)
 
 command! -nargs=+
-      \ -complete=customlist,lh#dev#style#_use_complete
-      \ UseStyle call lh#dev#style#_use_cmd(<f-args>)
+      \ -complete=customlist,lh#style#_use_complete
+      \ UseStyle call lh#style#_use_cmd(<f-args>)
 "------------------------------------------------------------------------
 " ## Register to editorconfig if found {{{1
 if !empty(globpath(&rtp, 'autoload/editorconfig.vim'))
-  call editorconfig#AddNewHook(function('lh#dev#editorconfig#hook'))
+  call editorconfig#AddNewHook(function('lh#style#__editorconfig#hook'))
 endif
 
 "------------------------------------------------------------------------
 " ## Functions {{{1
 " Note: most functions are best placed into
-" autoload/«your-initials»/«dev».vim
+" autoload/«your-initials»/«style».vim
 " Keep here only the functions are are required when the plugin is loaded,
 " like functions that help building a vim-menu for this plugin.
 " Name transformations {{{2
 let s:k_convertions = [
-      \ ['upper_camel_case', 'lh#dev#naming#to_upper_camel_case'],
-      \ ['lower_camel_case', 'lh#dev#naming#to_lower_camel_case'],
-      \ ['underscore',       'lh#dev#naming#to_underscore'],
-      \ ['snake',            'lh#dev#naming#to_underscore'],
-      \ ['variable',         'lh#dev#naming#variable'],
-      \ ['getter',           'lh#dev#naming#getter'],
-      \ ['setter',           'lh#dev#naming#setter'],
-      \ ['global',           'lh#dev#naming#global'],
-      \ ['local',            'lh#dev#naming#local'],
-      \ ['member',           'lh#dev#naming#member'],
-      \ ['static',           'lh#dev#naming#static'],
-      \ ['constant',         'lh#dev#naming#constant'],
-      \ ['param',            'lh#dev#naming#param'],
-      \ ['type',             'lh#dev#naming#type'],
-      \ ['function',         'lh#dev#naming#function']
+      \ ['upper_camel_case', 'lh#naming#to_upper_camel_case'],
+      \ ['lower_camel_case', 'lh#naming#to_lower_camel_case'],
+      \ ['underscore',       'lh#naming#to_underscore'],
+      \ ['snake',            'lh#naming#to_underscore'],
+      \ ['variable',         'lh#naming#variable'],
+      \ ['getter',           'lh#naming#getter'],
+      \ ['setter',           'lh#naming#setter'],
+      \ ['global',           'lh#naming#global'],
+      \ ['local',            'lh#naming#local'],
+      \ ['member',           'lh#naming#member'],
+      \ ['static',           'lh#naming#static'],
+      \ ['constant',         'lh#naming#constant'],
+      \ ['param',            'lh#naming#param'],
+      \ ['type',             'lh#naming#type'],
+      \ ['function',         'lh#naming#function']
       \ ]
 
 " from plugin/vim-tip-swap-word.vim

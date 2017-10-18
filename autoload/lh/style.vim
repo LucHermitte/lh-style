@@ -1,13 +1,13 @@
 "=============================================================================
-" File:         autoload/lh/dev/style.vim                         {{{1
+" File:         autoload/lh/style.vim                         {{{1
 " Author:       Luc Hermitte <EMAIL:hermitte {at} free {dot} fr>
-"               <URL:http://github.com/LucHermitte/lh-dev/>
+"               <URL:http://github.com/LucHermitte/lh-style/>
 " License:      GPLv3 with exceptions
-"               <URL:http://github.com/LucHermitte/lh-dev/tree/master/License.md>
-" Version:      2.0.0
-let s:k_version = 2000
+"               <URL:http://github.com/LucHermitte/lh-style/tree/master/License.md>
+" Version:      1.0.0
+let s:k_version = 100
 " Created:      12th Feb 2014
-" Last Update:  12th Oct 2017
+" Last Update:  17th Oct 2017
 "------------------------------------------------------------------------
 " Description:
 "       Functions related to help implement coding styles (e.g. Allman or K&R
@@ -16,13 +16,13 @@ let s:k_version = 2000
 "
 "       Defines:
 "       - support function for :AddStyle
-"       - lh#dev#style#get() that returns the style chosen for the given
+"       - lh#style#get() that returns the style chosen for the given
 "         filetype
 "
 " Requires:
 "       - lh-vim-lib v4.0.0
 " Tests:
-"       See tests/lh/dev-style.vim
+"       See tests/lh/style.vim
 " TODO:
 "       Remove unloaded buffers
 " }}}1
@@ -34,13 +34,13 @@ set cpo&vim
 "------------------------------------------------------------------------
 " ## Misc Functions     {{{1
 " # Version {{{2
-function! lh#dev#style#version()
+function! lh#style#version()
   return s:k_version
 endfunction
 
 " # Debug   {{{2
 let s:verbose = get(s:, 'verbose', 0)
-function! lh#dev#style#verbose(...)
+function! lh#style#verbose(...)
   if a:0 > 0 | let s:verbose = a:1 | endif
   return s:verbose
 endfunction
@@ -55,7 +55,7 @@ function! s:Verbose(expr, ...)
   endif
 endfunction
 
-function! lh#dev#style#debug(expr) abort
+function! lh#style#debug(expr) abort
   return eval(a:expr)
 endfunction
 
@@ -72,13 +72,13 @@ endfunction
 " ## Exported functions {{{1
 
 " # Main Style functions {{{2
-" Function: lh#dev#style#clear() {{{3
-function! lh#dev#style#clear()
+" Function: lh#style#clear() {{{3
+function! lh#style#clear()
   let s:style        = {}
   let s:style_groups = {}
 endfunction
 
-" Function: lh#dev#style#get(ft) {{{3
+" Function: lh#style#get(ft) {{{3
 " priority:
 " 1- same ft && buffer local
 " 2- inferior ft (C++ inherits C stuff) && buffer local
@@ -130,14 +130,14 @@ function! s:filter_related(styles, fts, bufnr) abort
   return styles
 endfunction
 
-function! lh#dev#style#get_groups(ft) abort
+function! lh#style#get_groups(ft) abort
   let fts = lh#ft#option#inherited_filetypes(a:ft) + ['*']
   let bufnr = bufnr('%')
   let style_groups = s:filter_related(s:style_groups, fts, bufnr)
   return style_groups
 endfunction
 
-function! lh#dev#style#get(ft) abort
+function! lh#style#get(ft) abort
   let res = {}
 
   let fts = lh#ft#option#inherited_filetypes(a:ft) + ['*']
@@ -172,8 +172,8 @@ function! lh#dev#style#get(ft) abort
   return res
 endfunction
 
-" Function: lh#dev#style#_sort_styles(styles) {{{3
-function! lh#dev#style#_sort_styles(styles) abort
+" Function: lh#style#_sort_styles(styles) {{{3
+function! lh#style#_sort_styles(styles) abort
   let prio_lists = {}
   for [key, style] in items(a:styles)
     if !has_key(prio_lists, style.prio)
@@ -191,14 +191,14 @@ function! lh#dev#style#_sort_styles(styles) abort
   " return keys
 endfunction
 
-" Function: lh#dev#style#apply(text [, ft]) {{{3
-function! lh#dev#style#apply(text, ...) abort
+" Function: lh#style#apply(text [, ft]) {{{3
+function! lh#style#apply(text, ...) abort
   let ft = a:0 == 0 ? &ft : a:1
-  let styles = lh#dev#style#get(ft)
-  return lh#dev#style#apply_these(styles, a:text)
+  let styles = lh#style#get(ft)
+  return lh#style#apply_these(styles, a:text)
 endfunction
 
-" Function: lh#dev#style#apply(styles, text) {{{3
+" Function: lh#style#apply(styles, text) {{{3
 " Function meant to be used in a loop after caching the styles
 let g:applyied_on=[]
 " function! s:cmp_e1_prio(lhs, rhs)
@@ -206,7 +206,7 @@ function! s:cmp_e1_prio(lhs, rhs)
   return get(a:lhs[1], 'prio', 0) - get(a:rhs[1], 'prio', 0)
 endfunction
 
-function! lh#dev#style#apply_these(styles, text, ...) abort
+function! lh#style#apply_these(styles, text, ...) abort
   let g:applyied_on += [a:text]
   let s:cache_of_ignored_matches = get(a:, 1, [])
   " Alas:
@@ -222,11 +222,11 @@ function! lh#dev#style#apply_these(styles, text, ...) abort
     " TODO: see whether a chained map() would be faster
     let res = substitute(res, pattern, style.replacement, 'g')
   endfor
-  let res = call('lh#dev#style#reinject_cached_ignored_matches', [res]+a:000)
+  let res = call('lh#style#reinject_cached_ignored_matches', [res]+a:000)
   return res
 endfunction
 
-" Function: lh#dev#style#reinject_cached_ignored_matches(text [, cache]) {{{3
+" Function: lh#style#reinject_cached_ignored_matches(text [, cache]) {{{3
 function! s:reinject_cached_ignored_matches(match, nl) abort
   let res = s:cache_of_ignored_matches[a:match]
   if (!empty(a:nl) && res[-1:]!="\n")
@@ -235,7 +235,7 @@ function! s:reinject_cached_ignored_matches(match, nl) abort
   return res
 endfunction
 
-function! lh#dev#style#reinject_cached_ignored_matches(text, ...) abort
+function! lh#style#reinject_cached_ignored_matches(text, ...) abort
   let s:cache_of_ignored_matches = get(a:, 1, [])
   if !empty(s:cache_of_ignored_matches)
     return substitute(a:text, '\v¤(\d+)¤(\n)=', '\=s:reinject_cached_ignored_matches(submatch(1), submatch(2))', 'g')
@@ -244,37 +244,39 @@ function! lh#dev#style#reinject_cached_ignored_matches(text, ...) abort
   endif
 endfunction
 
-" Function: lh#dev#style#ignore(pattern, local_global, ft) {{{3
-function! lh#dev#style#ignore(pattern, local_global, ft) abort
-  call lh#assert#value(a:local_global).match('\v^%(l%[ocal]|g%[lobal])$', "lh#dev#style#ignore() expects either 'local' or 'global' as 2nd parameter")
-  let ignore_group = lh#dev#style#define_group('ignored', 'ignored', a:local_global, 'c')
+" Function: lh#style#ignore(pattern, local_global, ft) {{{3
+function! lh#style#ignore(pattern, local_global, ft) abort
+  call lh#assert#value(a:local_global).match('\v^%(l%[ocal]|g%[lobal])$', "lh#style#ignore() expects either 'local' or 'global' as 2nd parameter")
+  let ignore_group = lh#style#define_group('ignored', 'ignored', a:local_global, 'c')
   call ignore_group.add(
         \ a:pattern,
-        \ '\=lh#dev#style#just_ignore_this(submatch(0))',
+        \ '\=lh#style#just_ignore_this(submatch(0))',
         \ 0)
 endfunction
 
-" Function: lh#dev#style#just_ignore_this(text [, cache_of_ignored_matches]) {{{3
+" Function: lh#style#just_ignore_this(text [, cache_of_ignored_matches]) {{{3
 " Permits other tools to inject texts to reinject latter after style has
 " been applied. See mu-template for an example of use.
-function! lh#dev#style#just_ignore_this(text, ...) abort
-  let cache_of_ignored_matches = get(a:, 1, s:cache_of_ignored_matches)
+function! lh#style#just_ignore_this(text, ...) abort
+  " get() requires the s:var to exist, hence the explicit test
+  " let cache_of_ignored_matches = get(a:, 1, s:cache_of_ignored_matches)
+  let cache_of_ignored_matches = (a:0 > 0) ? (a:1) : (s:cache_of_ignored_matches)
   return "¤".(len(add(cache_of_ignored_matches, a:text))-1)."¤"
 endfunction
 
 " # lh-brackets Adapters for snippets {{{2
-" Function: lh#dev#style#surround() {{{3
-function! lh#dev#style#surround(
+" Function: lh#style#surround() {{{3
+function! lh#style#surround(
       \ begin, end, isLine, isIndented, goback, mustInterpret, ...) range
-  let styles = lh#dev#style#get(&ft)
-  let begin = lh#dev#style#apply_these(styles, a:begin)
-  let end   = lh#dev#style#apply_these(styles, a:end)
+  let styles = lh#style#get(&ft)
+  let begin = lh#style#apply_these(styles, a:begin)
+  let end   = lh#style#apply_these(styles, a:end)
   return call(function('lh#map#surround'), [begin, end, a:isLine, a:isIndented, a:goback, a:mustInterpret]+a:000)
 endfunction
 
 " # Use semantically named styles {{{2
-" Function: lh#dev#style#_prepare_options_for_add_style(input_options) {{{3
-function! lh#dev#style#_prepare_options_for_add_style(input_options) abort
+" Function: lh#style#_prepare_options_for_add_style(input_options) {{{3
+function! lh#style#_prepare_options_for_add_style(input_options) abort
   let options       = []
   let local = get(a:input_options, 'buffer', 0)
   if local
@@ -291,7 +293,7 @@ function! lh#dev#style#_prepare_options_for_add_style(input_options) abort
   return [ options, local ? 'l' : 'g', prio, ft ]
 endfunction
 
-" Function: lh#dev#style#use(styles [, options]) {{{3
+" Function: lh#style#use(styles [, options]) {{{3
 " TODO: handle:
 " * incompatible families
 " * editor config possible future settings
@@ -311,9 +313,9 @@ endfunction
 " * Need to be able to clear a previous similar style
 let s:k_nb_leading_chars  = len('autoload/')
 let s:k_nb_trailing_chars = len('.vim') + 1
-function! lh#dev#style#use(styles, ...) abort
+function! lh#style#use(styles, ...) abort
   " let input_options = get(a:, 1, {})
-  " let [options, local_global, prio, ft] = lh#dev#style#_prepare_options_for_add_style(input_options)
+  " let [options, local_global, prio, ft] = lh#style#_prepare_options_for_add_style(input_options)
 
   for [style_name, style_state] in items(a:styles)
     let style_name  = tolower(style_name)
@@ -350,12 +352,12 @@ let s:k_script_name      = s:getSID()
 "------------------------------------------------------------------------
 " ## Internal functions {{{1
 if !exists('s:style')
-  call lh#dev#style#clear()
+  call lh#style#clear()
 endif
 
 " # :UseStyle API {{{2
-" Function: lh#dev#style#_decode_use_params(pattern, ...) {{{3
-function! lh#dev#style#_decode_use_params(...) abort
+" Function: lh#style#_decode_use_params(pattern, ...) {{{3
+function! lh#style#_decode_use_params(...) abort
   let local = -1
   let ft    = '*'
   let prio  = 1
@@ -381,14 +383,14 @@ function! lh#dev#style#_decode_use_params(...) abort
   return [local, ft, prio, list, name]
 endfunction
 
-" Function: lh#dev#style#_use_cmd(...) {{{3
-function! lh#dev#style#_use_cmd(...) abort
+" Function: lh#style#_use_cmd(...) {{{3
+function! lh#style#_use_cmd(...) abort
   " Analyse params {{{4
-  let [local, ft, prio, list, name] = call('lh#dev#style#_decode_use_params', a:000)
+  let [local, ft, prio, list, name] = call('lh#style#_decode_use_params', a:000)
 
   " list styles
   if list == 1
-    let groups = copy(lh#dev#style#get_groups(ft))
+    let groups = copy(lh#style#get_groups(ft))
     if empty(groups)
       echo "No style used for ft=".ft
       return
@@ -428,18 +430,18 @@ function! lh#dev#style#_use_cmd(...) abort
   let options = {'ft': ft, 'prio': prio, 'local': local }
   let arg = {}
   let arg[style] = value
-  call call('lh#dev#style#use', [arg, options])
+  call call('lh#style#use', [arg, options])
 endfunction
 
-" Function: lh#dev#style#_use_complete(ArgLead, CmdLine, CursorPos) {{{3
+" Function: lh#style#_use_complete(ArgLead, CmdLine, CursorPos) {{{3
 let s:k_use_style_options = ['-b', '-ft']
-function! lh#dev#style#_use_complete(ArgLead, CmdLine, CursorPos) abort
+function! lh#style#_use_complete(ArgLead, CmdLine, CursorPos) abort
   let [pos, tokens, ArgLead, CmdLine, CursorPos] = lh#command#analyse_args(a:ArgLead, a:CmdLine, a:CursorPos)
   if ArgLead =~ '^-'
     let res = copy(s:k_use_style_options)
   elseif ArgLead =~ "="
     let style = matchstr(ArgLead, '\v.{-}\ze\=')
-    let res = call('lh#dev#style#'.style.'#_known_list', [])
+    let res = call('lh#style#'.style.'#_known_list', [])
     call map(res, 'style."=".v:val')
   else
     let path = 'autoload/**/style/**/*.vim'
@@ -455,8 +457,8 @@ endfunction
 
 
 " # :AddStyle API {{{2
-" Function: lh#dev#style#_decode_add_params(pattern, ...) {{{3
-function! lh#dev#style#_decode_add_params(...) abort
+" Function: lh#style#_decode_add_params(pattern, ...) {{{3
+function! lh#style#_decode_add_params(...) abort
   let local = -1
   let ft    = '*'
   let prio  = 1
@@ -484,14 +486,14 @@ function! lh#dev#style#_decode_add_params(...) abort
   return [local, ft, prio, list, strs]
 endfunction
 
-" Function: lh#dev#style#_add(pattern, ...) {{{3
-function! lh#dev#style#_add(...) abort
+" Function: lh#style#_add(pattern, ...) {{{3
+function! lh#style#_add(...) abort
   " Analyse params {{{4
-  let [local, ft, prio, list, strs] = call('lh#dev#style#_decode_add_params', a:000)
+  let [local, ft, prio, list, strs] = call('lh#style#_decode_add_params', a:000)
 
   " list styles
   if list == 1
-    let styles = lh#dev#style#get(ft)
+    let styles = lh#style#get(ft)
     if has_key(strs, 'pattern')
       let styles = filter(copy(styles), 'v:key =~ strs.pattern')
     endif
@@ -531,9 +533,9 @@ function! lh#dev#style#_add(...) abort
   return pattern
 endfunction
 
-" Function: lh#dev#style#define_group(kind, name, local_global, ft) {{{3
-function! lh#dev#style#define_group(kind, name, local_global, ft) abort
-  call lh#assert#value(a:local_global).match('\v^%(l%[ocal]|g%[lobal])$', "lh#dev#style#define_group() expects either 'local' or 'global' as 3rd parameter")
+" Function: lh#style#define_group(kind, name, local_global, ft) {{{3
+function! lh#style#define_group(kind, name, local_global, ft) abort
+  call lh#assert#value(a:local_global).match('\v^%(l%[ocal]|g%[lobal])$', "lh#style#define_group() expects either 'local' or 'global' as 3rd parameter")
   let previous = get(s:style_groups, a:kind, [])
   let local = (a:local_global =~ '\v^l%[local]$') ? bufnr('%') : -1
   " first check whether there is already something before adding anything
@@ -567,8 +569,8 @@ function! s:add(pattern, repl, ...) dict abort
 endfunction
 
 " # Internals {{{2
-" Function: lh#dev#style#_get_replacement(styles, match, keys, all_text) {{{3
-function! lh#dev#style#_get_replacement(styles, match, keys, all_text) abort
+" Function: lh#style#_get_replacement(styles, match, keys, all_text) {{{3
+function! lh#style#_get_replacement(styles, match, keys, all_text) abort
   " We have been called => there is a match!
   let idx = lh#list#match_re(a:keys, a:match)
   if a:keys[idx] =~ '^^\|$$'
@@ -589,9 +591,9 @@ endfunction
 " # Space before open bracket in C & al {{{2
 " A little space before all C constructs in C and child languages
 " NB: the spaces isn't put before all open brackets
-call lh#dev#style#use({'spacesbeforeparens': 'ControlStatements'}, {'ft': 'c', 'prio': 10})
-call lh#dev#style#use({'spacesinptyparentheses': 'no'}           , {'ft': 'c', 'prio': 20})
-" call lh#dev#style#use({'spacesinemptyparentheses': 'no'}         , {'ft': 'c', 'prio': 20})
+call lh#style#use({'spacesbeforeparens': 'ControlStatements'}, {'ft': 'c', 'prio': 10})
+call lh#style#use({'spacesinptyparentheses': 'no'}           , {'ft': 'c', 'prio': 20})
+" call lh#style#use({'spacesinemptyparentheses': 'no'}         , {'ft': 'c', 'prio': 20})
 
 " # Ignore style in C comments {{{2
 " # Ignore style in comments after curly brackets {{{2
@@ -605,10 +607,10 @@ AddStyle }\\_s*}         -ft=cpp }\ }         -prio=20
 
 " # Doxygen {{{2
 " Doxygen Groups
-call lh#dev#style#ignore('@{' , 'global', 'c')
-call lh#dev#style#ignore('@}' , 'global', 'c')
-call lh#dev#style#ignore('\\{', 'global', 'c')
-call lh#dev#style#ignore('\\}', 'global', 'c')
+call lh#style#ignore('@{' , 'global', 'c')
+call lh#style#ignore('@}' , 'global', 'c')
+call lh#style#ignore('\\{', 'global', 'c')
+call lh#style#ignore('\\}', 'global', 'c')
 " AddStyle @\\_s*{  -ft=c @{ -prio=100
 " AddStyle @\\_s*}  -ft=c @} -prio=100
 
@@ -619,10 +621,10 @@ AddStyle \\\\f{ -ft=c \\\\f{
 AddStyle \\\\f} -ft=c \\\\f}
 
 " # Default style in C & al: Stroustrup/K&R {{{2
-call lh#dev#style#use({'indent_brace_style': 'Stroustrup'}       , {'ft': 'c', 'prio': 10})
+call lh#style#use({'indent_brace_style': 'Stroustrup'}       , {'ft': 'c', 'prio': 10})
 
 " # Inhibated style in C & al: Allman, Whitesmiths, Pico {{{2
-" call lh#dev#style#use('Allman', {'ft': 'c', 'prio': 10})
+" call lh#style#use('Allman', {'ft': 'c', 'prio': 10})
 
 " # Ignore curly-brackets on single lines {{{2
 " TODO
@@ -630,9 +632,9 @@ AddStyle ^\ *{\ *$ -ft=c &
 AddStyle ^\ *}\ *$ -ft=c &
 
 " # Handle specifically empty pairs of curly-brackets {{{2
-call lh#dev#style#use({'empty_braces': 'nl'}, {'ft': 'c', 'prio': 10})
-" call lh#dev#style#use({'empty_braces': 'empty'}, {'ft': 'c', 'prio': 10})
-" call lh#dev#style#use({'empty_braces': 'space'}, {'ft': 'c', 'prio': 10})
+call lh#style#use({'empty_braces': 'nl'}, {'ft': 'c', 'prio': 10})
+" call lh#style#use({'empty_braces': 'empty'}, {'ft': 'c', 'prio': 10})
+" call lh#style#use({'empty_braces': 'space'}, {'ft': 'c', 'prio': 10})
 
 " Mixed
 " -> Split it
@@ -645,14 +647,14 @@ call lh#dev#style#use({'empty_braces': 'nl'}, {'ft': 'c', 'prio': 10})
 " # Some generic patterns to ignore {{{2
 " In my templates, I write my email address as "luc {dot} ... {at}..."
 " These artefacts shall be left alone.
-call lh#dev#style#ignore('{\w\+}', 'global', 'c')
+call lh#style#ignore('{\w\+}', 'global', 'c')
 
 " # Java style {{{2
 " Force Java style in Java
 " AddStyle { -ft=java -prio=10 \ {\n
 " AddStyle } -ft=java -prio=10 \n}
-call lh#dev#style#use({'indent_brace_style': 'java'}, {'ft': 'java', 'prio': 10})
-call lh#dev#style#use({'spacesbeforeparens': 'ControlStatements'}, {'ft': 'java', 'prio': 10})
+call lh#style#use({'indent_brace_style': 'java'}, {'ft': 'java', 'prio': 10})
+call lh#style#use({'spacesbeforeparens': 'ControlStatements'}, {'ft': 'java', 'prio': 10})
 
 " }}}1
 "------------------------------------------------------------------------

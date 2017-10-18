@@ -27,10 +27,13 @@ Vimrunner::RSpec.configure do |config|
   config.start_vim do
     vim = Vimrunner.start_gvim
     # vim = Vimrunner.start
+    # pp vim.echo('&rtp')
     
     vim.add_plugin(vim_flavor_path, 'bootstrap.vim')
+    pp vim.echo('&rtp')
     vim.prepend_runtimepath(vim_plugin_path+'/after')
     vim.prepend_runtimepath(vim_plugin_path)
+    # pp vim.echo('&rtp')
 
     # lh-UT
     vim_UT_path      = File.expand_path('../../../vim-UT', __FILE__)
@@ -45,10 +48,10 @@ Vimrunner::RSpec.configure do |config|
     # vim.runtime('plugin/ui-functions.vim') # lh#ui#confirm
     # vim.command(':messages')
 
-    # lh-dev
-    vim_dev_path = File.expand_path('../../../lh-dev', __FILE__)
-    vim.prepend_runtimepath(vim_dev_path)
-    vim.runtime('plugin/dev.vim') # AddStyle
+    # lh-style
+    vim_style_path = File.expand_path('../../../lh-style', __FILE__)
+    vim.prepend_runtimepath(vim_style_path)
+    vim.runtime('plugin/lh-style.vim') # AddStyle
 
     # lh-brackets
     vim_brackets_path = File.expand_path('../../../lh-brackets', __FILE__)

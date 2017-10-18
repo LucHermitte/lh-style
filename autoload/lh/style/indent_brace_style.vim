@@ -1,14 +1,16 @@
 "=============================================================================
-" File:         autoload/lh/dev/style/indent_brace_style.vim      {{{1
+" File:         autoload/lh/style/indent_brace_style.vim      {{{1
 " Author:       Luc Hermitte <EMAIL:luc {dot} hermitte {at} gmail {dot} com>
-"		<URL:http://github.com/LucHermitte/lh-dev>
-" Version:      2.0.0
-let s:k_version = '2.0.0'
+"		<URL:http://github.com/LucHermitte/lh-style>
+" License:      GPLv3 with exceptions
+"               <URL:http://github.com/LucHermitte/lh-style/License.md>
+" Version:      1.0.0
+let s:k_version = '1.0.0'
 " Created:      04th Aug 2017
-" Last Update:  04th Oct 2017
+" Last Update:  17th Oct 2017
 "------------------------------------------------------------------------
 " Description:
-"       lh-dev style-plugin for EditorConfig non-official
+"       lh-style style-plugin for EditorConfig non-official
 "       "indent_brace_style" stylistic option.
 "
 "------------------------------------------------------------------------
@@ -23,13 +25,13 @@ set cpo&vim
 "------------------------------------------------------------------------
 " ## Misc Functions     {{{1
 " # Version {{{2
-function! lh#dev#style#indent_brace_style#version()
+function! lh#style#indent_brace_style#version()
   return s:k_version
 endfunction
 
 " # Debug   {{{2
 let s:verbose = get(s:, 'verbose', 0)
-function! lh#dev#style#indent_brace_style#verbose(...)
+function! lh#style#indent_brace_style#verbose(...)
   if a:0 > 0 | let s:verbose = a:1 | endif
   return s:verbose
 endfunction
@@ -44,7 +46,7 @@ function! s:Verbose(expr, ...)
   endif
 endfunction
 
-function! lh#dev#style#indent_brace_style#debug(expr) abort
+function! lh#style#indent_brace_style#debug(expr) abort
   return eval(a:expr)
 endfunction
 
@@ -53,11 +55,11 @@ endfunction
 " ## Styles             {{{1
 " # Common definitions {{{2
 " # Style definitions {{{2
-" Function: lh#dev#style#indent_brace_style#_linux_kernel(local, ft, prio, ...) {{{3
+" Function: lh#style#indent_brace_style#_linux_kernel(local, ft, prio, ...) {{{3
 " clang-format BreakBeforeBrace=Linux is just about braces. This indent style
 " also implies expandtab and ts8
-function! lh#dev#style#indent_brace_style#_linux_kernel(local, ft, prio, ...) abort
-  let style = call('lh#dev#style#__braces#linux', [a:local, a:ft, a:prio] + a:000)
+function! lh#style#indent_brace_style#_linux_kernel(local, ft, prio, ...) abort
+  let style = call('lh#style#__braces#linux', [a:local, a:ft, a:prio] + a:000)
   " TODO: when used with global and ft!='*', register expandtab/ts to be set to
   " be set locally
   if a:local
@@ -73,14 +75,14 @@ function! lh#dev#style#indent_brace_style#_linux_kernel(local, ft, prio, ...) ab
   return style
 endfunction
 
-" Function: lh#dev#style#indent_brace_style#_bsd_knf(local, ft, prio, ...) {{{3
+" Function: lh#style#indent_brace_style#_bsd_knf(local, ft, prio, ...) {{{3
 " https://en.wikipedia.org/wiki/Indent_style#Variant:_BSD_KNF
 " Also implies:
 " - extra empty line at function start if there is no local variable: unimplemented
 " - ts=8/expandtab // sw=4 for alignment (alignment: unimplemented)
 " - space before parenthesis for ctrl statements, not functions
-function! lh#dev#style#indent_brace_style#_bsd_knf(local, ft, prio, ...) abort
-  let style = call('lh#dev#style#__braces#bsd_knf', [a:local, a:ft, a:prio] + a:000)
+function! lh#style#indent_brace_style#_bsd_knf(local, ft, prio, ...) abort
+  let style = call('lh#style#__braces#bsd_knf', [a:local, a:ft, a:prio] + a:000)
   " TODO: when used with global and ft!='*', register expandtab/ts to be set
   " locally
   if a:local
@@ -100,27 +102,27 @@ endfunction
 
 " ## API      functions {{{1
 let s:k_function = {
-      \ 'none'        : 'lh#dev#style#__braces#none'
-      \,'k_r'         : 'lh#dev#style#__braces#linux'
-      \,'0tbs'        : 'lh#dev#style#__braces#linux'
-      \,'1tbs'        : 'lh#dev#style#__braces#linux'
-      \,'linux_kernel': 'lh#dev#style#indent_brace_style#_linux_kernel'
-      \,'bsd_knf'     : 'lh#dev#style#indent_brace_style#_bsd_knf'
-      \,'ratliff'     : 'lh#dev#style#__braces#ratliff'
-      \,'stroustrup'  : 'lh#dev#style#__braces#stroustrup'
-      \,'allman'      : 'lh#dev#style#__braces#allman'
-      \,'whitesmiths' : 'lh#dev#style#__braces#allman'
-      \,'gnu'         : 'lh#dev#style#__braces#gnu'
-      \,'horstmann'   : 'lh#dev#style#__braces#horstmann'
-      \,'pico'        : 'lh#dev#style#__braces#pico'
-      \,'lisp'        : 'lh#dev#style#__braces#lisp'
-      \,'java'        : 'lh#dev#style#__braces#java'
+      \ 'none'        : 'lh#style#__braces#none'
+      \,'k_r'         : 'lh#style#__braces#linux'
+      \,'0tbs'        : 'lh#style#__braces#linux'
+      \,'1tbs'        : 'lh#style#__braces#linux'
+      \,'linux_kernel': 'lh#style#indent_brace_style#_linux_kernel'
+      \,'bsd_knf'     : 'lh#style#indent_brace_style#_bsd_knf'
+      \,'ratliff'     : 'lh#style#__braces#ratliff'
+      \,'stroustrup'  : 'lh#style#__braces#stroustrup'
+      \,'allman'      : 'lh#style#__braces#allman'
+      \,'whitesmiths' : 'lh#style#__braces#allman'
+      \,'gnu'         : 'lh#style#__braces#gnu'
+      \,'horstmann'   : 'lh#style#__braces#horstmann'
+      \,'pico'        : 'lh#style#__braces#pico'
+      \,'lisp'        : 'lh#style#__braces#lisp'
+      \,'java'        : 'lh#style#__braces#java'
       \ }
 
-" Function: lh#dev#style#indent_brace_style#use(styles, indent, ...) {{{3
-function! lh#dev#style#indent_brace_style#use(styles, indent, ...) abort
+" Function: lh#style#indent_brace_style#use(styles, indent, ...) {{{3
+function! lh#style#indent_brace_style#use(styles, indent, ...) abort
   let input_options = get(a:, 1, {})
-  let [options, local_global, prio, ft] = lh#dev#style#_prepare_options_for_add_style(input_options)
+  let [options, local_global, prio, ft] = lh#style#_prepare_options_for_add_style(input_options)
   if prio == 1
     let prio9 = 9
     let prio = 10
@@ -140,8 +142,8 @@ endfunction
 "------------------------------------------------------------------------
 " ## Internal functions {{{1
 
-" Function: lh#dev#style#indent_brace_style#_known_list() {{{2
-function! lh#dev#style#indent_brace_style#_known_list() abort
+" Function: lh#style#indent_brace_style#_known_list() {{{2
+function! lh#style#indent_brace_style#_known_list() abort
   return keys(s:k_function)
 endfunction
 

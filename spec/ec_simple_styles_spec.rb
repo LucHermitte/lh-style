@@ -18,7 +18,8 @@ RSpec.describe "When testing EditorConfig Domain-Specific styles", :style, :doma
     expect(vim.command('verbose function lh#ui#input')).to match(/input-mock.vim/)
     # expect(vim.echo('lh#mut#dirs#get_templates_for("cpp/abstract-class")')).to match(/abstract-class.template/)
     vim.command('SetMarker <+ +>')
-    expect(vim.echo('&rtp')).to match(/lh-dev/)
+    expect(vim.echo('&rtp')).to match(/lh-style/)
+    # expect(vim.echo('&rtp')).not_to match(/lh-dev/)
   end
 
   # ====[ Tests in directories with .editorconfig file {{{2
@@ -43,8 +44,8 @@ RSpec.describe "When testing EditorConfig Domain-Specific styles", :style, :doma
       vim.command('silent! unlet g:cpp_std_flavour')
       expect(vim.command('runtime! spec/support/c-snippets.vim')).to eq "" # if snippet
       expect(vim.command('verbose iab if')).to match(/LH_cpp_snippets_def_abbr/)
-      expect(vim.echo('lh#dev#style#clear()')).to eq "0"
-      expect(vim.echo('lh#dev#style#get("c")')).to eq "{}"
+      expect(vim.echo('lh#style#clear()')).to eq "0"
+      expect(vim.echo('lh#style#get("c")')).to eq "{}"
       clear_buffer
       set_buffer_contents <<-EOF
       /** File Header line to trick auto-inclusion */

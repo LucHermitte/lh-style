@@ -18,7 +18,7 @@ RSpec.describe "When testing semantic styles", :style, :indent_brace_style do
     expect(vim.command('verbose function lh#ui#input')).to match(/input-mock.vim/)
     # expect(vim.echo('lh#mut#dirs#get_templates_for("cpp/abstract-class")')).to match(/abstract-class.template/)
     vim.command('SetMarker <+ +>')
-    expect(vim.echo('&rtp')).to match(/lh-dev/)
+    expect(vim.echo('&rtp')).to match(/lh-style/)
   end
 
   # ====[ Tests in simple directory {{{2
@@ -36,7 +36,8 @@ RSpec.describe "When testing semantic styles", :style, :indent_brace_style do
       vim.command('silent! unlet g:cpp_std_flavour')
       expect(vim.command('runtime! spec/support/c-snippets.vim')).to eq "" # if snippet
       expect(vim.command('verbose iab if')).to match(/LH_cpp_snippets_def_abbr/)
-      vim.command('call lh#dev#style#clear()')
+      vim.command('call lh#style#clear()')
+      expect(vim.echo('lh#style#get("c")')).to eq "{}"
       clear_buffer
       set_buffer_contents <<-EOF
       /** File Header line to trick auto-inclusion */
@@ -49,7 +50,7 @@ RSpec.describe "When testing semantic styles", :style, :indent_brace_style do
 
     # ====[ K&R {{{3
     specify "`if` is correctly expanded in K&R's style", :k_r do
-      expect(vim.echo('lh#dev#style#use({"indent_brace_style": "K&R"}, {"buffer": 1})')).to eq "1"
+      expect(vim.echo('lh#style#use({"indent_brace_style": "K&R"}, {"buffer": 1})')).to eq "1"
       vim.feedkeys('aif foo\<esc>')
       vim.feedkeys('i\<esc>') # pause
       assert_buffer_contents <<-EOF
@@ -63,7 +64,7 @@ RSpec.describe "When testing semantic styles", :style, :indent_brace_style do
 
     # ====[ 1TBS {{{3
     specify "`if` is correctly expanded in 1TBS's style", :otbs do
-      expect(vim.echo('lh#dev#style#use({"indent_brace_style": "1TBS"}, {"buffer": 1})')).to eq "1"
+      expect(vim.echo('lh#style#use({"indent_brace_style": "1TBS"}, {"buffer": 1})')).to eq "1"
       vim.feedkeys('aif foo\<esc>')
       vim.feedkeys('i\<esc>') # pause
       assert_buffer_contents <<-EOF
@@ -77,7 +78,7 @@ RSpec.describe "When testing semantic styles", :style, :indent_brace_style do
 
     # ====[ Stroustrup {{{3
     specify "`if` is correctly expanded in Stroustrup's style", :stroustrup do
-      expect(vim.echo('lh#dev#style#use({"indent_brace_style": "Stroustrup"}, {"buffer": 1})')).to eq "1"
+      expect(vim.echo('lh#style#use({"indent_brace_style": "Stroustrup"}, {"buffer": 1})')).to eq "1"
       vim.feedkeys('aif foo\<esc>')
       vim.feedkeys('i\<esc>') # pause
       assert_buffer_contents <<-EOF
@@ -92,7 +93,7 @@ RSpec.describe "When testing semantic styles", :style, :indent_brace_style do
 
     # ====[ Horstmann {{{3
     specify "`if` is correctly expanded in Horstmann's style", :horstmann do
-      expect(vim.echo('lh#dev#style#use({"indent_brace_style": "Horstmann"}, {"buffer": 1})')).to eq "1"
+      expect(vim.echo('lh#style#use({"indent_brace_style": "Horstmann"}, {"buffer": 1})')).to eq "1"
       vim.feedkeys('aif foo\<esc>')
       vim.feedkeys('i\<esc>') # pause
       assert_buffer_contents <<-EOF
@@ -107,7 +108,7 @@ RSpec.describe "When testing semantic styles", :style, :indent_brace_style do
 
     # ====[ Pico {{{3
     specify "`if` is correctly expanded in Pico's style", :pico do
-      expect(vim.echo('lh#dev#style#use({"indent_brace_style": "Pico"}, {"buffer": 1})')).to eq "1"
+      expect(vim.echo('lh#style#use({"indent_brace_style": "Pico"}, {"buffer": 1})')).to eq "1"
       vim.feedkeys('aif foo\<esc>')
       vim.feedkeys('i\<esc>') # pause
       assert_buffer_contents <<-EOF
@@ -121,7 +122,7 @@ RSpec.describe "When testing semantic styles", :style, :indent_brace_style do
 
     # ====[ Lisp {{{3
     specify "`if` is correctly expanded in Lisp's style", :lisp do
-      expect(vim.echo('lh#dev#style#use({"indent_brace_style": "Lisp"}, {"buffer": 1})')).to eq "1"
+      expect(vim.echo('lh#style#use({"indent_brace_style": "Lisp"}, {"buffer": 1})')).to eq "1"
       vim.feedkeys('aif foo\<esc>')
       vim.feedkeys('i\<esc>') # pause
       assert_buffer_contents <<-EOF
@@ -137,7 +138,7 @@ RSpec.describe "When testing semantic styles", :style, :indent_brace_style do
 
     # ====[ Java {{{3
     specify "`if` is correctly expanded in Java's style", :java do
-      expect(vim.echo('lh#dev#style#use({"indent_brace_style": "Java"}, {"buffer": 1})')).to eq "1"
+      expect(vim.echo('lh#style#use({"indent_brace_style": "Java"}, {"buffer": 1})')).to eq "1"
       vim.feedkeys('aif foo\<esc>')
       vim.feedkeys('i\<esc>') # pause
       assert_buffer_contents <<-EOF
@@ -151,7 +152,7 @@ RSpec.describe "When testing semantic styles", :style, :indent_brace_style do
 
     # ====[ Allman {{{3
     specify "`if` is correctly expanded in Allman's style", :allman do
-      expect(vim.echo('lh#dev#style#use({"indent_brace_style": "Allman"}, {"buffer": 1})')).to eq "1"
+      expect(vim.echo('lh#style#use({"indent_brace_style": "Allman"}, {"buffer": 1})')).to eq "1"
       vim.feedkeys('aif foo\<esc>')
       vim.feedkeys('i\<esc>') # pause
       assert_buffer_contents <<-EOF
@@ -189,7 +190,8 @@ RSpec.describe "When testing semantic styles", :style, :indent_brace_style do
       vim.command('silent! unlet g:cpp_std_flavour')
       expect(vim.command('runtime! spec/support/c-snippets.vim')).to eq "" # if snippet
       expect(vim.command('verbose iab if')).to match(/LH_cpp_snippets_def_abbr/)
-      vim.command('call lh#dev#style#clear()')
+      vim.command('call lh#style#clear()')
+      expect(vim.echo('lh#style#get("c")')).to eq "{}"
       clear_buffer
       set_buffer_contents <<-EOF
       /** File Header line to trick auto-inclusion */
