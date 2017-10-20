@@ -1,7 +1,7 @@
-# lh-style [![Last release](https://img.shields.io/github/tag/LucHermitte/lh-style.svg)](https://github.com/LucHermitte/lh-style/releases) [![Build Status](https://secure.travis-ci.org/LucHermitte/lh-style.png?branch=master)](http://travis-ci.org/LucHermitte/lh-style) [![Project Stats](https://www.openhub.net/p/21020/widgets/project_thin_badge.gif)](https://www.openhub.net/p/21020)
+# lh-style [![Last release](https://img.shields.io/github/tag/LucHermitte/lh-style.svg)](https://github.com/LucHermitte/lh-style/releases) [![Build Status](https://secure.travis-ci.org/LucHermitte/lh-style.png?branch=master)](http://travis-ci.org/LucHermitte/lh-style) [![Documentation Status](https://readthedocs.org/projects/lh-style/badge/?version=latest)](http://lh-style.readthedocs.io/en/latest/?badge=latest) [![Project Stats](https://www.openhub.net/p/21020/widgets/project_thin_badge.gif)](https://www.openhub.net/p/21020)
 
 
-Discl. This page is currently under (re)construction!
+Discl. This page is currently under heavy reorganization!
 
 TODO:
 
@@ -14,8 +14,8 @@ TODO:
             -[ ] end-user side
                 -[x] `.editorconfig`
                 -[x] `.clang-format` (to be implemented)
-                -[ ] `:UseStyle`
-                -[ ] `:AddStyle`
+                -[x] `:UseStyle`
+                -[x] `:AddStyle`
             -[ ] extending the style families
         -[x] Naming policies
     -[ ] API

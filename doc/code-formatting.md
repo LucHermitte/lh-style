@@ -1,4 +1,4 @@
-# Control code formatting with lh-style
+# Code formatting
 
 Some projects will want to have open curly-brackets on new lines (see
 [Allman indenting style](https://en.wikipedia.org/wiki/Indentation_style#Allman_style)), other will prefer to have the
