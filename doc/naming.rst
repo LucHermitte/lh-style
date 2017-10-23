@@ -1,3 +1,4 @@
+.. _NamingPolicy:
 
 Naming policy
 =============

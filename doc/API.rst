@@ -5,6 +5,8 @@ API
 
 This part is just a draft for the moment.
 
+.. _Formatting-API:
+
 Formatting API
 --------------
 
