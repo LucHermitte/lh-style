@@ -16,7 +16,7 @@ maintainers.  See :ref:`API section <API>` to see how you could exploit these op
 
 Snippets from `lh-cpp <http://github.com/LucHermitte/lh-cpp>`_ and
 `mu-template <http://github.com/LucHermitte/mu-template>`_\ , and refactorings from
-`lh-refactor <http://github.com/LucHermitte/lh-refactor>`_ exploit the options offered by lh-style for specifying code
+`vim-refactor <http://github.com/LucHermitte/vim-refactor>`_ exploit the options offered by lh-style for specifying code
 style.
 
 ..
