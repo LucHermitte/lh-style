@@ -52,8 +52,8 @@ style.
 
 lh-style permits to adjust the style of the code you generate along two axis:
 
-- you can define a [naming policy](doc/naming.md)
-- you can define a [formatting style](doc/code-formatting.md) regarding the placement of brackets, spaces, newlines, and
+- you can define a [naming policy](doc/naming.rst)
+- you can define a [formatting style](doc/code-formatting.rst) regarding the placement of brackets, spaces, newlines, and
   so on.
 
 ---
