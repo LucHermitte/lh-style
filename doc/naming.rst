@@ -8,28 +8,33 @@ Thanks to lh-style, we can define how the names of functions, classes, constants
 
 This information can then be retrieved by plugins through the :ref:`Naming-API`.
 
-This information can also be used from ``:NameConvert`` and ``:ConvertNames`` commands.
+This information can also be used from |NameConvert|_ and |ConvertNames|_ commands.
 
 NB: both commands support command-line auto-completion on naming policy names.
 
 
+.. |NameConvert| replace:: :samp:`:NameConvert`
 .. _NameConvert:
 
-``:NameConvert``
---------------------
+:samp:`:NameConvert {policy}`
+-----------------------------
 
-``:NameConvert`` converts the identifier under the cursor to one of the following naming policies:
+:samp:`:NameConvert` converts the identifier under the cursor to one of the following naming policies:
 
 
 * naming styles: ``upper_camel_case``, ``lower_camel_case``, ``underscore``/``snake``, ``variable``,
 * identifier kinds: ``getter``, ``setter``, ``local``, ``global``, ``member``, ``static``, ``constant``, ``param`` (the exact conversion process can be tuned thanks to the `following options <#options-to-tune-the-naming-policy>`_).
 
+.. |ConvertNames| replace:: :samp:`:ConvertNames`
 .. _ConvertNames:
 
-``:ConvertNames``
----------------------
+:samp:`:[range]ConvertNames/{pattern}/{policy}/[{flags}]`
+---------------------------------------------------------
 
-``:[range]ConvertNames/pattern/policy/[flags]`` transforms according to the *policy* all names that match the *pattern* -- it applies ``:NameConvert`` on text matched by ``:substitute``.
+:samp:`ConvertNames` transforms according to the :samp:`{policy}` all names that match the :samp:`{pattern}` -- it
+applies |NameConvert| on text matched by ``:substitute``.
+
+See `:h :s_flags <http://vimhelp.appspot.com/change.txt.html#%3as_flags>`_ regarding possible :samp:`{flags}`.
 
 Options to tune the naming policy
 ---------------------------------
