@@ -7,7 +7,7 @@
 " Version:      1.0.0.
 let s:k_version = '100'
 " Created:      02nd Oct 2017
-" Last Update:  17th Oct 2017
+" Last Update:  09th Nov 2017
 "------------------------------------------------------------------------
 " Description:
 "       lh-style style-plugin for clang-format "SpacesInEmptyParentheses"
@@ -77,6 +77,7 @@ function! lh#style#spacesinemptyparentheses#use(styles, value, ...) abort
   else " no
     call style.add(s:k_pattern, '' , prio)
   endif
+  return 1
 endfunction
 
 "------------------------------------------------------------------------

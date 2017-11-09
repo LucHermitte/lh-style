@@ -7,7 +7,7 @@
 " Version:      1.0.0.
 let s:k_version = '100'
 " Created:      06th Oct 2017
-" Last Update:  17th Oct 2017
+" Last Update:  09th Nov 2017
 "------------------------------------------------------------------------
 " Description:
 "       Shall we leave empty braces alone?
@@ -79,6 +79,7 @@ function! lh#style#empty_braces#use(styles, value, ...) abort
   else " space
     call style.add('{\_s*}', '{ }', prio+20)
   endif
+  return 1
 endfunction
 
 

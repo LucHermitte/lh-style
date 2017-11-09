@@ -169,6 +169,7 @@ following procedure has to be respected:
           else
             call s:crt_style.add(regex3, repl3, prio)
           endif
+          return 1
         endfunction
 
   .. note::

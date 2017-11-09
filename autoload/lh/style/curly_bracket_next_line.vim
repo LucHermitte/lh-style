@@ -7,7 +7,7 @@
 " Version:      1.0.0
 let s:k_version = '1.0.0'
 " Created:      04th Aug 2017
-" Last Update:  17th Oct 2017
+" Last Update:  09th Nov 2017
 "------------------------------------------------------------------------
 " Description:
 "       lh-style style-plugin for EditorConfig non-official
@@ -85,6 +85,7 @@ function! lh#style#curly_bracket_next_line#use(styles, value, ...) abort
   else
     call style.add('{', '{', prio)
   endif
+  return 1
 endfunction
 
 "------------------------------------------------------------------------

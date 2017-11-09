@@ -7,7 +7,7 @@
 " Version:      1.0.0.
 let s:k_version = '100'
 " Created:      02nd Oct 2017
-" Last Update:  17th Oct 2017
+" Last Update:  09th Nov 2017
 "------------------------------------------------------------------------
 " Description:
 "       lh-style style-plugin for clang-format
@@ -79,6 +79,7 @@ function! lh#style#spacesbeforeparens#use(styles, value, ...) abort
     call style.add('\%(\<\%(if\|while\|switch\|for\|catch\)\>\)\@<!\s*(', '('  , prio)
     call style.add('\<\%(if\|while\|switch\|for\|catch\)\>\zs\s*('      , ' (' , prio)
   endif
+  return 1
 endfunction
 
 "------------------------------------------------------------------------
