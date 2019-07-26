@@ -134,7 +134,7 @@ function! s:NameConvert(convertion_type) abort
 
   let new_word = function(s:k_convertions[i][1])(crt_word)
 
-  let s2 = s[:crt_word_start-1]
+  let s2 = (crt_word_start ? s[:crt_word_start-1] : '')
         \ . new_word
         \ . (crt_word_end==-1 ? '' : s[crt_word_end+1 : -1])
   call setline(l, s2)
