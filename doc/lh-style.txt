@@ -1,5 +1,5 @@
 *lh-style.txt*            Vim Script library providing stylistic related functions (v1.0.0.)
-                        For Vim version 7+.    Last change: 26th Jul 2019
+                        For Vim version 7+.    Last change: 06th Sep 2019
 
                         By Luc Hermitte
                         hermitte {at} free {dot} fr
@@ -83,11 +83,12 @@ EditorConfig styles (https://github.com/editorconfig/editorconfig/wiki/EditorCon
    - `spaces_around_brackets`   = [`inside`, `outside`, `both`, `none`]
 
 Clang-Format styles:
-   - `breakbeforebraces`        = [`allman`, `attach`, `gnu`, `linux`,
-                                 `none`, `stroustrup` ]
-   - `spacesbeforeparens`       = [`none`, `never`, `always`, `control-statements`]
-   -` spacesinemptyparentheses` = [`yes`, `no`] // `true,` `false,` `0,` `1`.
-   -` spacesinparentheses`      = [`yes`, `no`] // `true,` `false,` `0,` `1`.
+   - `breakbeforebraces`            = [`allman`, `attach`, `gnu`, `linux`,
+                                     `none`, `stroustrup` ]
+   - `spacesbeforeparens`           = [`none`, `never`, `always`, `control-statements`]
+   - `spacesbeforetrailingcomments` = [`\n`, positive-number]
+   -` spacesinemptyparentheses`     = [`yes`, `no`] // `true,` `false,` `0,` `1`.
+   -` spacesinparentheses`          = [`yes`, `no`] // `true,` `false,` `0,` `1`.
 
 If you want more precise control, without familly management, you can use
 |:AddStyle| instead.

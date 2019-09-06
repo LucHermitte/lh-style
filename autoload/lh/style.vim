@@ -7,7 +7,7 @@
 " Version:      1.0.0
 let s:k_version = 100
 " Created:      12th Feb 2014
-" Last Update:  29th Mar 2019
+" Last Update:  06th Sep 2019
 "------------------------------------------------------------------------
 " Description:
 "       Functions related to help implement coding styles (e.g. Allman or K&R
@@ -676,6 +676,9 @@ call lh#style#use({'empty_braces': 'nl'}, {'ft': 'c', 'prio': 10})
 " In my templates, I write my email address as "luc {dot} ... {at}..."
 " These artefacts shall be left alone.
 call lh#style#ignore('{\w\+}', 'global', 'c')
+
+" # Space before trailing comments in C++ {{{2
+call lh#style#use({'spacesbeforetrailingcomments': '1'}, {'ft': 'cpp', 'prio': 10})
 
 " # Java style {{{2
 " Force Java style in Java
