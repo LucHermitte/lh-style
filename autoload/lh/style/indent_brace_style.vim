@@ -60,7 +60,7 @@ endfunction
 " also implies expandtab and ts8
 function! lh#style#indent_brace_style#_linux_kernel(local, ft, prio, ...) abort
   let style = call('lh#style#__braces#linux', [a:local, a:ft, a:prio] + a:000)
-  call lh#style#__braces#__register_options(style, a:local, a:ft, 'expandtab', 'ts=8')
+  call style.register_options('expandtab', 'ts=8')
   return style
 endfunction
 
@@ -72,7 +72,7 @@ endfunction
 " - space before parenthesis for ctrl statements, not functions
 function! lh#style#indent_brace_style#_bsd_knf(local, ft, prio, ...) abort
   let style = call('lh#style#__braces#bsd_knf', [a:local, a:ft, a:prio] + a:000)
-  call lh#style#__braces#__register_options(style, a:local, a:ft, 'expandtab', 'ts=8', 'sw=4')
+  call style.register_options('expandtab', 'ts=8', 'sw=4')
   return style
 endfunction
 

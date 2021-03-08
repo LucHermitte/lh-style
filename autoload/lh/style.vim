@@ -627,6 +627,15 @@ endfunction
 
 function! s:register_options(...) dict abort
   call s:Verbose("Register to 'options': %1", a:000)
+  let cmd
+        \ = self.local != -1  ? 'setlocal '
+        \ : self.ft    == '*' ? 'set '
+        \ :                     ''
+  if !empty(cmd)
+    for opt in a:000
+      execute cmd . opt
+    endfor
+  endif
   let self._options += a:000
 endfunction
 
