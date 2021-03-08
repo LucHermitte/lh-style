@@ -7,7 +7,7 @@
 " Version:      1.0.0.
 let s:k_version = '100'
 " Created:      29th Aug 2017
-" Last Update:  10th Jan 2021
+" Last Update:  08th Mar 2021
 "------------------------------------------------------------------------
 " Description:
 "       Factorize all styles related to curly-braces.
@@ -180,11 +180,26 @@ function! lh#style#__braces#allman(local_global, ft, prio, ...) abort
   return style
 endfunction
 
+" Function: lh#style#__braces#whitesmith(local_global, ft, prio, ...) {{{2
+" Idem Allman, but with extra cinoptions
+function! lh#style#__braces#whitesmith(local_global, ft, prio, ...) abort
+  let style = lh#style#__braces#__new('whitesmith', a:local_global, a:ft)
+  call style.add(s:k_no_non_spaces_before.'{', '\n{'  , a:prio)
+  call style.add('{'.s:k_no_non_spaces_after , '{\n'  , a:prio)
+
+  call style.add(s:k_no_non_spaces_before. '}'                                , '\n}'  , a:prio)
+  " extra \n if followed by a semi-colon
+  call style.add('};' . s:k_no_non_spaces_after                               , '};\n' , a:prio)
+  " extra \n either way, unless followed by semi-colon or comment-start
+  call style.add('}\%(\s*\%($\|\n\)\|[;/]\)\@!'                               , '}\n', a:prio)
+  call style.add_to_cinoptions('f1s', '{1s')
+  return style
+endfunction
+
 " Function: lh#style#__braces#gnu(local_global, ft, prio, ...) {{{2
 " Always break before braces and add an extra level of indentation to braces of
 " control statements, not to those of class, function or other definitions.
 " "gnu" comes from clang-format BreakBeforeBrace
-" TODO: adjust cindent
 function! lh#style#__braces#gnu(local_global, ft, prio, ...) abort
   let style = lh#style#__braces#__new('gnu', a:local_global, a:ft)
 
@@ -196,6 +211,7 @@ function! lh#style#__braces#gnu(local_global, ft, prio, ...) abort
   call style.add('};' . s:k_no_non_spaces_after                               , '};\n' , a:prio)
   " extra \n either way, unless followed by semi-colon or comment-start
   call style.add('}\%(\s*\%($\|\n\)\|[;/]\)\@!'                               , '}\n', a:prio)
+  call style.add_to_cinoptions('{.5s')
   return style
 endfunction
 

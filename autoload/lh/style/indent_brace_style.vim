@@ -7,7 +7,7 @@
 " Version:      1.0.0
 let s:k_version = '1.0.0'
 " Created:      04th Aug 2017
-" Last Update:  17th Oct 2017
+" Last Update:  08th Mar 2021
 "------------------------------------------------------------------------
 " Description:
 "       lh-style style-plugin for EditorConfig non-official
@@ -111,7 +111,7 @@ let s:k_function = {
       \,'ratliff'     : 'lh#style#__braces#ratliff'
       \,'stroustrup'  : 'lh#style#__braces#stroustrup'
       \,'allman'      : 'lh#style#__braces#allman'
-      \,'whitesmiths' : 'lh#style#__braces#allman'
+      \,'whitesmiths' : 'lh#style#__braces#whitesmith'
       \,'gnu'         : 'lh#style#__braces#gnu'
       \,'horstmann'   : 'lh#style#__braces#horstmann'
       \,'pico'        : 'lh#style#__braces#pico'
