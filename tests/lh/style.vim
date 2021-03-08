@@ -6,7 +6,7 @@
 "               <URL:http://github.com/LucHermitte/lh-style/License.md>
 " Version:      1.0.0
 " Created:      14th Feb 2014
-" Last Update:  10th Jan 2021
+" Last Update:  08th Mar 2021
 "------------------------------------------------------------------------
 " Description:
 "       Unit tests for lh#style
@@ -358,8 +358,22 @@ function! s:Test_use_bbb_attach() abort
     AssertEqual(lh#style#apply("class toto {\ntoto\n};\n##"), "class toto {\ntoto\n};\n##")
     AssertEqual(lh#style#apply("foo() {\ntoto\n}").'##', "foo() {\ntoto\n}##")
     AssertEqual(lh#style#apply("if(cond) {\ntoto;\n} else if(c2) {\ntutu;\n} else {\ntiti;\n}").'##', "if(cond) {\ntoto;\n} else if(c2) {\ntutu;\n} else {\ntiti;\n}##")
+
+    " Surrounding
+    xnoremap <buffer><silent> ,if  <C-\><C-N>@=lh#style#surround('if(!cursorhere!){', '}!mark!', 0, 1, '', 1, 'if ')<CR>
+    SetMarker <+ +>
+    setlocal sw=2
+    SetBufferContent << trim EOF
+    if (cond) { foobar; }
+    EOF
+    normal V,if
+    AssertBufferMatches << trim EOF
+    if() {
+      if (cond) { foobar; }
+    }<++>
+    EOF
   finally
-    bw
+    bw!
   endtry
 endfunction
 
@@ -397,8 +411,23 @@ function! s:Test_use_bbb_stroustrup() " #{{{3
     AssertEqual(lh#style#apply("foo()\n{\ntoto\n}\n").'##', "foo()\n{\ntoto\n}\n##")
     AssertEqual(lh#style#apply("if(cond) {\ntoto\n}\n").'##', "if(cond) {\ntoto\n}\n##")
     AssertEqual(lh#style#apply("if(cond) {\ntoto;\n}\nelse if(c2) {\ntutu;\n}\nelse {\ntiti;\n}\n").'##', "if(cond) {\ntoto;\n}\nelse if(c2) {\ntutu;\n}\nelse {\ntiti;\n}\n##")
+
+    " Surrounding
+    xnoremap <buffer><silent> ,if  <C-\><C-N>@=lh#style#surround('if(!cursorhere!){', '}!mark!', 0, 1, '', 1, 'if ')<CR>
+    SetMarker <+ +>
+    setlocal sw=2
+    SetBufferContent << trim EOF
+    if (cond) { foobar; }
+    EOF
+    normal V,if
+    AssertBufferMatches << trim EOF
+    if() {
+      if (cond) { foobar; }
+    }
+    <++>
+    EOF
   finally
-    bw
+    bw!
   endtry
 endfunction
 
@@ -437,8 +466,22 @@ function! s:Test_use_bbb_linux() " #{{{3
     AssertEqual(lh#style#apply("if(cond) {\ntoto\n}\n##"), "if(cond) {\ntoto\n}\n##")
     AssertEqual(lh#style#apply("if(cond) {\ntoto\n}\n##"), "if(cond) {\ntoto\n}\n##")
     AssertEqual(lh#style#apply("if(cond) {\ntoto;\n} else {\ntiti;\n}\n##"), "if(cond) {\ntoto;\n} else {\ntiti;\n}\n##")
+
+    " Surrounding
+    xnoremap <buffer><silent> ,if  <C-\><C-N>@=lh#style#surround('if(!cursorhere!){', '}!mark!', 0, 1, '', 1, 'if ')<CR>
+    SetMarker <+ +>
+    setlocal sw=2
+    SetBufferContent << trim EOF
+    if (cond) { foobar; }
+    EOF
+    normal V,if
+    AssertBufferMatches << trim EOF
+    if() {
+      if (cond) { foobar; }
+    }<++>
+    EOF
   finally
-    bw
+    bw!
   endtry
 endfunction
 
@@ -465,8 +508,24 @@ function! s:Test_use_bbb_allman() " #{{{3
     AssertEqual(lh#style#apply("if(cond)\n{\ntoto\n}\n##"), "if(cond)\n{\ntoto\n}\n##")
     AssertEqual(lh#style#apply("if(cond)\n{\ntoto;\n}\nelse\n{\ntiti;\n}\n##"), "if(cond)\n{\ntoto;\n}\nelse\n{\ntiti;\n}\n##")
     AssertEqual(lh#style#apply("if(cond)\n{\ntoto;\n}\nelse if(c2)\n{\ntutu;\n}\nelse\n{\ntiti;\n}\n##"), "if(cond)\n{\ntoto;\n}\nelse if(c2)\n{\ntutu;\n}\nelse\n{\ntiti;\n}\n##")
+
+    " Surrounding
+    xnoremap <buffer><silent> ,if  <C-\><C-N>@=lh#style#surround('if(!cursorhere!){', '}!mark!', 0, 1, '', 1, 'if ')<CR>
+    SetMarker <+ +>
+    setlocal sw=2
+    SetBufferContent << trim EOF
+    if (cond) { foobar; }
+    EOF
+    normal V,if
+    AssertBufferMatches << trim EOF
+    if()
+    {
+      if (cond) { foobar; }
+    }
+    <++>
+    EOF
   finally
-    bw
+    bw!
   endtry
 endfunction
 
@@ -497,8 +556,29 @@ function! s:Test_use_bbb_gnu() " #{{{3
     AssertEqual(lh#style#apply("if(cond)\n{\ntoto\n}\n##"), "if(cond)\n{\ntoto\n}\n##")
     AssertEqual(lh#style#apply("if(cond)\n{\ntoto;\n}\nelse\n{\ntiti;\n}\n##"), "if(cond)\n{\ntoto;\n}\nelse\n{\ntiti;\n}\n##")
     AssertEqual(lh#style#apply("if(cond)\n{\ntoto;\n}\nelse if(c2)\n{\ntutu;\n}\nelse\n{\ntiti;\n}\n##"), "if(cond)\n{\ntoto;\n}\nelse if(c2)\n{\ntutu;\n}\nelse\n{\ntiti;\n}\n##")
+
+    " Surrounding
+    xnoremap <buffer><silent> ,if  <C-\><C-N>@=lh#style#surround('if(!cursorhere!){', '}!mark!', 0, 1, '', 1, 'if ')<CR>
+    SetMarker <+ +>
+    setlocal sw=2
+    AssertEqual(lh#style#update_cinoptions(&ft), ['{.5s'])
+    SetBufferContent << trim EOF
+    {
+      if (cond) { foobar; }
+    }
+    EOF
+    2normal V,if
+    AssertBufferMatches << trim EOF
+    {
+      if()
+       {
+        if (cond) { foobar; }
+       }
+      <++>
+    }
+    EOF
   finally
-    bw
+    bw!
   endtry
 endfunction
 
@@ -537,8 +617,22 @@ function! s:Test_use_ibs_kr() " #{{{3
     AssertEqual(lh#style#apply("int main()\n{\ntoto;\n}\n##"), "int main()\n{\ntoto;\n}\n##")
     AssertEqual(lh#style#apply("if(cond) {\ntoto\n}\n##"), "if(cond) {\ntoto\n}\n##")
     AssertEqual(lh#style#apply("if(cond) {\ntoto;\n} else {\ntiti;\n}\n##"), "if(cond) {\ntoto;\n} else {\ntiti;\n}\n##")
+
+    " Surrounding
+    xnoremap <buffer><silent> ,if  <C-\><C-N>@=lh#style#surround('if(!cursorhere!){', '}!mark!', 0, 1, '', 1, 'if ')<CR>
+    SetMarker <+ +>
+    setlocal sw=2
+    SetBufferContent << trim EOF
+    if (cond) { foobar; }
+    EOF
+    normal V,if
+    AssertBufferMatches << trim EOF
+    if() {
+      if (cond) { foobar; }
+    }<++>
+    EOF
   finally
-    bw
+    bw!
   endtry
 endfunction
 
@@ -582,8 +676,22 @@ function! s:Test_use_ibs_0tbs() " #{{{3
     AssertEqual(lh#style#apply("if(cond) {\ntoto\n}"), "if(cond) {\ntoto\n}")
     AssertEqual(lh#style#apply('if(cond){toto}'.s:marker('##')), "if(cond) {\ntoto\n}".s:marker("##"))
     AssertEqual(lh#style#apply("if(cond) {\ntoto;\n} else {\ntiti;\n}"), "if(cond) {\ntoto;\n} else {\ntiti;\n}")
+
+    " Surrounding
+    xnoremap <buffer><silent> ,if  <C-\><C-N>@=lh#style#surround('if(!cursorhere!){', '}!mark!', 0, 1, '', 1, 'if ')<CR>
+    SetMarker <+ +>
+    setlocal sw=2
+    SetBufferContent << trim EOF
+    if (cond) { foobar; }
+    EOF
+    normal V,if
+    AssertBufferMatches << trim EOF
+    if() {
+      if (cond) { foobar; }
+    }<++>
+    EOF
   finally
-    bw
+    bw!
   endtry
 endfunction
 
@@ -605,8 +713,22 @@ function! s:Test_use_ibs_linux_kernel() " #{{{3
     AssertEqual(lh#style#apply("if(cond) {\ntoto\n}\n##"), "if(cond) {\ntoto\n}\n##")
     AssertEqual(lh#style#apply("if(cond) {\ntoto\n}"), "if(cond) {\ntoto\n}")
     AssertEqual(lh#style#apply("if(cond) {\ntoto;\n} else {\ntiti;\n}"), "if(cond) {\ntoto;\n} else {\ntiti;\n}")
+
+    " Surrounding
+    xnoremap <buffer><silent> ,if  <C-\><C-N>@=lh#style#surround('if(!cursorhere!){', '}!mark!', 0, 1, '', 1, 'if ')<CR>
+    SetMarker <+ +>
+    setlocal sw=2
+    SetBufferContent << trim EOF
+    if (cond) { foobar; }
+    EOF
+    normal V,if
+    AssertBufferMatches << trim EOF
+    if() {
+      if (cond) { foobar; }
+    }<++>
+    EOF
   finally
-    bw
+    bw!
   endtry
 endfunction
 
@@ -633,8 +755,23 @@ function! s:Test_use_ibs_bsd_knf() " #{{{3
     AssertEqual(lh#style#apply("if (cond) {\ntoto\n}\n##"), "if (cond) {\ntoto\n}\n##")
     AssertEqual(lh#style#apply("if (cond) {\ntoto;\n}\nelse {\ntiti;\n}"), "if (cond) {\ntoto;\n}\nelse {\ntiti;\n}")
     AssertEqual(lh#style#apply("if (cond) {\ntoto;\n}\nelse {\ntiti;\n}\n##"), "if (cond) {\ntoto;\n}\nelse {\ntiti;\n}\n##")
+
+    " Surrounding
+    xnoremap <buffer><silent> ,if  <C-\><C-N>@=lh#style#surround('if(!cursorhere!){', '}!mark!', 0, 1, '', 1, 'if ')<CR>
+    SetMarker <+ +>
+    setlocal sw=2
+    SetBufferContent << trim EOF
+    if (cond) { foobar; }
+    EOF
+    normal V,if
+    AssertBufferMatches << trim EOF
+    if () {
+      if (cond) { foobar; }
+    }
+    <++>
+    EOF
   finally
-    bw
+    bw!
   endtry
 endfunction
 
@@ -662,8 +799,23 @@ function! s:Test_use_ibs_ratliff() " #{{{3
     AssertEqual(lh#style#apply("if(cond) {\ntoto\n}\n##"), "if(cond) {\ntoto\n}\n##")
     AssertEqual(lh#style#apply("if(cond) {\ntoto;\n}\nelse {\ntiti;\n}"), "if(cond) {\ntoto;\n}\nelse {\ntiti;\n}")
     AssertEqual(lh#style#apply("if(cond) {\ntoto;\n}\nelse {\ntiti;\n}\n##"), "if(cond) {\ntoto;\n}\nelse {\ntiti;\n}\n##")
+
+    " Surrounding
+    xnoremap <buffer><silent> ,if  <C-\><C-N>@=lh#style#surround('if(!cursorhere!){', '}!mark!', 0, 1, '', 1, 'if ')<CR>
+    SetMarker <+ +>
+    setlocal sw=2
+    SetBufferContent << trim EOF
+    if (cond) { foobar; }
+    EOF
+    normal V,if
+    AssertBufferMatches << trim EOF
+    if() {
+      if (cond) { foobar; }
+    }
+    <++>
+    EOF
   finally
-    bw
+    bw!
   endtry
 endfunction
 
@@ -690,8 +842,24 @@ function! s:Test_use_ibs_allman() " #{{{3
     AssertEqual(lh#style#apply("if(cond)\n{\ntoto\n}\n##"), "if(cond)\n{\ntoto\n}\n##")
     AssertEqual(lh#style#apply("if(cond)\n{\ntoto;\n}\nelse\n{\ntiti;\n}\n##"), "if(cond)\n{\ntoto;\n}\nelse\n{\ntiti;\n}\n##")
     AssertEqual(lh#style#apply("if(cond)\n{\ntoto;\n}\nelse if(c2)\n{\ntutu;\n}\nelse\n{\ntiti;\n}\n##"), "if(cond)\n{\ntoto;\n}\nelse if(c2)\n{\ntutu;\n}\nelse\n{\ntiti;\n}\n##")
+
+    " Surrounding
+    xnoremap <buffer><silent> ,if  <C-\><C-N>@=lh#style#surround('if(!cursorhere!){', '}!mark!', 0, 1, '', 1, 'if ')<CR>
+    SetMarker <+ +>
+    setlocal sw=2
+    SetBufferContent << trim EOF
+    if (cond) { foobar; }
+    EOF
+    normal V,if
+    AssertBufferMatches << trim EOF
+    if()
+    {
+      if (cond) { foobar; }
+    }
+    <++>
+    EOF
   finally
-    bw
+    bw!
   endtry
 endfunction
 
@@ -724,8 +892,25 @@ function! s:Test_use_ibs_whitesmiths() " #{{{3
     AssertEqual(lh#style#apply("if(cond)\n{\ntoto\n}\n##"), "if(cond)\n{\ntoto\n}\n##")
     AssertEqual(lh#style#apply("if(cond)\n{\ntoto;\n}\nelse\n{\ntiti;\n}\n##"), "if(cond)\n{\ntoto;\n}\nelse\n{\ntiti;\n}\n##")
     AssertEqual(lh#style#apply("if(cond)\n{\ntoto;\n}\nelse if(c2)\n{\ntutu;\n}\nelse\n{\ntiti;\n}\n##"), "if(cond)\n{\ntoto;\n}\nelse if(c2)\n{\ntutu;\n}\nelse\n{\ntiti;\n}\n##")
+
+    " Surrounding
+    xnoremap <buffer><silent> ,if  <C-\><C-N>@=lh#style#surround('if(!cursorhere!){', '}!mark!', 0, 1, '', 1, 'if ')<CR>
+    SetMarker <+ +>
+    setlocal sw=2
+    AssertEqual(lh#style#update_cinoptions(&ft), ['f1s', '{1s'])
+    SetBufferContent << trim EOF
+    if (cond) { foobar; }
+    EOF
+    normal V,if
+    AssertBufferMatches << trim EOF
+    if()
+      {
+      if (cond) { foobar; }
+      }
+    <++>
+    EOF
   finally
-    bw
+    bw!
   endtry
 endfunction
 
@@ -754,8 +939,29 @@ function! s:Test_use_ibs_gnu() " #{{{3
     AssertEqual(lh#style#apply("if(cond)\n{\ntoto\n}\n##"), "if(cond)\n{\ntoto\n}\n##")
     AssertEqual(lh#style#apply("if(cond)\n{\ntoto;\n}\nelse\n{\ntiti;\n}\n##"), "if(cond)\n{\ntoto;\n}\nelse\n{\ntiti;\n}\n##")
     AssertEqual(lh#style#apply("if(cond)\n{\ntoto;\n}\nelse if(c2)\n{\ntutu;\n}\nelse\n{\ntiti;\n}\n##"), "if(cond)\n{\ntoto;\n}\nelse if(c2)\n{\ntutu;\n}\nelse\n{\ntiti;\n}\n##")
+
+    " Surrounding
+    xnoremap <buffer><silent> ,if  <C-\><C-N>@=lh#style#surround('if(!cursorhere!){', '}!mark!', 0, 1, '', 1, 'if ')<CR>
+    SetMarker <+ +>
+    setlocal sw=2
+    AssertEqual(lh#style#update_cinoptions(&ft), ['{.5s'])
+    SetBufferContent << trim EOF
+    {
+      if (cond) { foobar; }
+    }
+    EOF
+    2normal V,if
+    AssertBufferMatches << trim EOF
+    {
+      if()
+       {
+        if (cond) { foobar; }
+       }
+      <++>
+    }
+    EOF
   finally
-    bw
+    bw!
   endtry
 endfunction
 
@@ -799,8 +1005,23 @@ function! s:Test_use_ibs_hortsmann() " #{{{3
     AssertEqual(lh#style#apply("if(cond)\n{   toto\n}"), "if(cond)\n{   toto\n}")
     AssertEqual(lh#style#apply("if(cond)\n{   toto;\n}\nelse\n{   titi;\n}\n##"), "if(cond)\n{   toto;\n}\nelse\n{   titi;\n}\n##")
     AssertEqual(lh#style#apply("if(cond)\n{   toto;\n}\nelse if(c2)\n{   tutu;\n}\nelse\n{   titi;\n}\n##"), "if(cond)\n{   toto;\n}\nelse if(c2)\n{   tutu;\n}\nelse\n{   titi;\n}\n##")
+
+    " Surrounding
+    xnoremap <buffer><silent> ,if  <C-\><C-N>@=lh#style#surround('if(!cursorhere!){', '}!mark!', 0, 1, '', 1, 'if ')<CR>
+    SetMarker <+ +>
+    setlocal sw=4
+    SetBufferContent << trim EOF
+    if (cond) { foobar; }
+    EOF
+    normal V,if
+    AssertBufferMatches << trim EOF
+    if()
+    {   if (cond) { foobar; }
+    }
+    <++>
+    EOF
   finally
-    bw
+    bw!
   endtry
 endfunction
 
@@ -833,8 +1054,22 @@ function! s:Test_use_ibs_pico() " #{{{3
     AssertEqual(lh#style#apply("if(cond)\n{   toto }"), "if(cond)\n{   toto }")
     AssertEqual(lh#style#apply("if(cond)\n{   toto; }\nelse\n{   titi; }"), "if(cond)\n{   toto; }\nelse\n{   titi; }")
     AssertEqual(lh#style#apply("if(cond)\n{   toto; }\nelse if(c2)\n{   tutu; }\nelse\n{   titi; }"), "if(cond)\n{   toto; }\nelse if(c2)\n{   tutu; }\nelse\n{   titi; }")
+
+    " Surrounding
+    xnoremap <buffer><silent> ,if  <C-\><C-N>@=lh#style#surround('if(!cursorhere!){', '}!mark!', 0, 1, '', 1, 'if ')<CR>
+    SetMarker <+ +>
+    setlocal sw=2
+    SetBufferContent << trim EOF
+    if (cond) { foobar; }
+    EOF
+    normal V,if
+    AssertBufferMatches << trim EOF
+    if()
+    {   if (cond) { foobar; } }
+    <++>
+    EOF
   finally
-    bw
+    bw!
   endtry
 endfunction
 
@@ -864,8 +1099,22 @@ function! s:Test_use_ibs_lisp() " #{{{3
     AssertEqual(lh#style#apply("if(cond) {\ntoto}"), "if(cond) {\ntoto}")
     AssertEqual(lh#style#apply("if(cond) {\ntoto;}\nelse {\ntiti;}"), "if(cond) {\ntoto;}\nelse {\ntiti;}")
     AssertEqual(lh#style#apply("if(cond) {\nif(cond2) {\ntoto;}\nelse {\ntiti;}}\nelse {\ntutu;}"), "if(cond) {\nif(cond2) {\ntoto;}\nelse {\ntiti;}}\nelse {\ntutu;}")
+
+    " Surrounding
+    xnoremap <buffer><silent> ,if  <C-\><C-N>@=lh#style#surround('if(!cursorhere!){', '}!mark!', 0, 1, '', 1, 'if ')<CR>
+    SetMarker <+ +>
+    setlocal sw=2
+    SetBufferContent << trim EOF
+    if (cond) { foobar; }
+    EOF
+    normal V,if
+    AssertBufferMatches << trim EOF
+    if() {
+      if (cond) { foobar; }}
+    <++>
+    EOF
   finally
-    bw
+    bw!
   endtry
 endfunction
 
@@ -887,8 +1136,22 @@ function! s:Test_use_ibs_java() " #{{{3
     AssertEqual(lh#style#apply("if(cond) {\ntoto\n}"), "if(cond) {\ntoto\n}")
     AssertEqual(lh#style#apply("if(cond) {\ntoto\n}\n##"), "if(cond) {\ntoto\n}\n##")
     AssertEqual(lh#style#apply("if(cond) {\ntoto;\n} else {\ntiti;\n}"), "if(cond) {\ntoto;\n} else {\ntiti;\n}")
+
+    " Surrounding
+    xnoremap <buffer><silent> ,if  <C-\><C-N>@=lh#style#surround('if(!cursorhere!){', '}!mark!', 0, 1, '', 1, 'if ')<CR>
+    SetMarker <+ +>
+    setlocal sw=2
+    SetBufferContent << trim EOF
+    if (cond) { foobar; }
+    EOF
+    normal V,if
+    AssertBufferMatches << trim EOF
+    if() {
+      if (cond) { foobar; }
+    }<++>
+    EOF
   finally
-    bw
+    bw!
   endtry
 endfunction
 
