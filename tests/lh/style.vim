@@ -1111,8 +1111,10 @@ function! s:Test_use_ibs_lisp() " #{{{3
     AssertBufferMatches << trim EOF
     if() {
       if (cond) { foobar; }}
-    <++>
+      <++>
     EOF
+    " Note: the marker isn't correctly placed. I guess cinoptions should be
+    " tuned for this style
   finally
     bw!
   endtry
