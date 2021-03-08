@@ -172,8 +172,8 @@ function! lh#style#get(ft) abort
   return res
 endfunction
 
-" Function: lh#style#update_cinoptions(ft) {{{3
-function! lh#style#update_cinoptions(ft) abort
+" Function: lh#style#update_options(ft) {{{3
+function! lh#style#update_options(ft) abort
   let res = []
   let fts = lh#ft#option#inherited_filetypes(a:ft) + ['*']
   let bufnr = bufnr('%')
@@ -183,12 +183,14 @@ function! lh#style#update_cinoptions(ft) abort
   for [gname, hows] in style_groups
     call lh#assert#value(hows).not().empty()
     " call lh#assert#value(len(hows)).eq(1)
-    call lh#assert#value(hows[0]).has_key('_cinoptions')
-    call s:Verbose("grp:%1: cino %2", gname, hows[0]._cinoptions)
-    let res += hows[0]._cinoptions
+    call lh#assert#value(hows[0]).has_key('_options')
+    call s:Verbose("grp:%1: option %2", gname, hows[0]._options)
+    let res += hows[0]._options
   endfor
 
-  exe 'setlocal cinoptions+='.join(res, ',')
+  for opt in res
+    exe 'setlocal '.opt
+  endfor
   return res
 endfunction
 
@@ -579,8 +581,8 @@ function! lh#style#get_group(kind, name, local_global, ft) abort
     let s:style_groups[a:kind] = previous + [group]
     let group.name         = a:name
     let group._definitions = {}
-    let group._cinoptions  = []
-    call lh#object#inject_methods(group, s:k_script_name, ['add', 'add_to_cinoptions'])
+    let group._options     = []
+    call lh#object#inject_methods(group, s:k_script_name, ['add', 'register_options'])
   endif
   call lh#assert#value(group).get('ft').eq(a:ft)
   call lh#assert#value(group).get('local').eq(local)
@@ -611,8 +613,8 @@ function! lh#style#define_group(kind, name, local_global, ft) abort
   call lh#assert#value(group).get('local').eq(local)
   let group.name         = a:name
   let group._definitions = {}
-  let group._cinoptions  = []
-  call lh#object#inject_methods(group, s:k_script_name, ['add', 'add_to_cinoptions'])
+  let group._options     = []
+  call lh#object#inject_methods(group, s:k_script_name, ['add', 'register_options'])
   return group
 endfunction
 
@@ -623,9 +625,9 @@ function! s:add(pattern, repl, ...) dict abort
   return self
 endfunction
 
-function! s:add_to_cinoptions(...) dict abort
-  call s:Verbose("Register to 'cinoptions': %1", a:000)
-  let self._cinoptions += a:000
+function! s:register_options(...) dict abort
+  call s:Verbose("Register to 'options': %1", a:000)
+  let self._options += a:000
 endfunction
 
 " # Internals {{{2

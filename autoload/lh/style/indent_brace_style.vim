@@ -60,18 +60,7 @@ endfunction
 " also implies expandtab and ts8
 function! lh#style#indent_brace_style#_linux_kernel(local, ft, prio, ...) abort
   let style = call('lh#style#__braces#linux', [a:local, a:ft, a:prio] + a:000)
-  " TODO: when used with global and ft!='*', register expandtab/ts to be set to
-  " be set locally
-  if a:local
-    setlocal expandtab
-    setlocal ts=8
-  elseif a:ft == '*'
-    set expandtab
-    set ts=8
-  else
-    " TODO: when used with global and ft!='*', register expandtab/ts to be set to
-    call lh#common#warning_msg("expandtab and tabstop won't be set properly with these parameters: all buffers and ft=".a:ft)
-  endif
+  call lh#style#__braces#__register_options(style, a:local, a:ft, 'expandtab', 'ts=8')
   return style
 endfunction
 
@@ -83,20 +72,7 @@ endfunction
 " - space before parenthesis for ctrl statements, not functions
 function! lh#style#indent_brace_style#_bsd_knf(local, ft, prio, ...) abort
   let style = call('lh#style#__braces#bsd_knf', [a:local, a:ft, a:prio] + a:000)
-  " TODO: when used with global and ft!='*', register expandtab/ts to be set
-  " locally
-  if a:local
-    setlocal expandtab
-    setlocal ts=8
-    setlocal sw=4
-  elseif a:ft == '*'
-    set expandtab
-    set ts=8
-    set sw=4
-  else
-    " TODO: when used with global and ft!='*', register expandtab/ts to be set to
-    call lh#common#warning_msg("expandtab and tabstop won't be set properly with these parameters: all buffers and ft=".a:ft)
-  endif
+  call lh#style#__braces#__register_options(style, a:local, a:ft, 'expandtab', 'ts=8', 'sw=4')
   return style
 endfunction
 

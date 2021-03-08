@@ -561,7 +561,7 @@ function! s:Test_use_bbb_gnu() " #{{{3
     xnoremap <buffer><silent> ,if  <C-\><C-N>@=lh#style#surround('if(!cursorhere!){', '}!mark!', 0, 1, '', 1, 'if ')<CR>
     SetMarker <+ +>
     setlocal sw=2
-    AssertEqual(lh#style#update_cinoptions(&ft), ['{.5s'])
+    AssertEqual(lh#style#update_options(&ft), ['cinoptions+={.5s'])
     SetBufferContent << trim EOF
     {
       if (cond) { foobar; }
@@ -897,7 +897,7 @@ function! s:Test_use_ibs_whitesmiths() " #{{{3
     xnoremap <buffer><silent> ,if  <C-\><C-N>@=lh#style#surround('if(!cursorhere!){', '}!mark!', 0, 1, '', 1, 'if ')<CR>
     SetMarker <+ +>
     setlocal sw=2
-    AssertEqual(lh#style#update_cinoptions(&ft), ['f1s', '{1s'])
+    AssertEqual(lh#style#update_options(&ft), ['cinoptions+=f1s,{1s'])
     SetBufferContent << trim EOF
     if (cond) { foobar; }
     EOF
@@ -944,7 +944,7 @@ function! s:Test_use_ibs_gnu() " #{{{3
     xnoremap <buffer><silent> ,if  <C-\><C-N>@=lh#style#surround('if(!cursorhere!){', '}!mark!', 0, 1, '', 1, 'if ')<CR>
     SetMarker <+ +>
     setlocal sw=2
-    AssertEqual(lh#style#update_cinoptions(&ft), ['{.5s'])
+    AssertEqual(lh#style#update_options(&ft), ['cinoptions+={.5s'])
     SetBufferContent << trim EOF
     {
       if (cond) { foobar; }

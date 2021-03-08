@@ -51,6 +51,25 @@ endfunction
 
 "------------------------------------------------------------------------
 " ## Internal functions {{{1
+" Function: lh#style#__braces#__register_options(style, local, ft, options...) {{{3
+function! lh#style#__braces#__register_options(style, local, ft, ...) abort
+  if a:local
+    let cmd = 'setlocal '
+  elseif a:ft == '*'
+    let cmd = 'set '
+  else
+    let cmd = ''
+  endif
+  if !empty(cmd)
+    for opt in a:000
+      execute cmd.opt
+    endfor
+  endif
+  call call(a:style.register_options, a:000, a:style)
+  " call a:style.register_options(a:000)
+endfunction
+
+
 " Function: lh#style#__braces#__new(name, local_global, ft) {{{2
 function! lh#style#__braces#__new(name, local_global, ft) abort
   let style = lh#style#define_group('curly-braces', a:name, a:local_global, a:ft)
@@ -192,7 +211,7 @@ function! lh#style#__braces#whitesmith(local_global, ft, prio, ...) abort
   call style.add('};' . s:k_no_non_spaces_after                               , '};\n' , a:prio)
   " extra \n either way, unless followed by semi-colon or comment-start
   call style.add('}\%(\s*\%($\|\n\)\|[;/]\)\@!'                               , '}\n', a:prio)
-  call style.add_to_cinoptions('f1s', '{1s')
+  call lh#style#__braces#__register_options(style, a:local_global, a:ft, 'cinoptions+=f1s,{1s')
   return style
 endfunction
 
@@ -211,7 +230,7 @@ function! lh#style#__braces#gnu(local_global, ft, prio, ...) abort
   call style.add('};' . s:k_no_non_spaces_after                               , '};\n' , a:prio)
   " extra \n either way, unless followed by semi-colon or comment-start
   call style.add('}\%(\s*\%($\|\n\)\|[;/]\)\@!'                               , '}\n', a:prio)
-  call style.add_to_cinoptions('{.5s')
+  call lh#style#__braces#__register_options(style, a:local_global, a:ft, 'cinoptions+={.5s')
   return style
 endfunction
 
