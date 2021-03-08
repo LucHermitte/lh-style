@@ -7,7 +7,7 @@
 " Version:      1.0.0
 let s:k_version = 100
 " Created:      12th Feb 2014
-" Last Update:  08th Mar 2021
+" Last Update:  09th Mar 2021
 "------------------------------------------------------------------------
 " Description:
 "       Functions related to help implement coding styles (e.g. Allman or K&R
@@ -173,25 +173,37 @@ function! lh#style#get(ft) abort
 endfunction
 
 " Function: lh#style#update_options(ft) {{{3
-function! lh#style#update_options(ft) abort
+function! s:update_options(bids, ft) abort
   let res = []
   let fts = lh#ft#option#inherited_filetypes(a:ft) + ['*']
-  let bufnr = bufnr('%')
 
-  " Extract groups
-  let style_groups = s:filter_related(s:style_groups, fts, bufnr)
-  for [gname, hows] in style_groups
-    call lh#assert#value(hows).not().empty()
-    " call lh#assert#value(len(hows)).eq(1)
-    call lh#assert#value(hows[0]).has_key('_options')
-    call s:Verbose("grp:%1: option %2", gname, hows[0]._options)
-    let res += hows[0]._options
-  endfor
+  for bufnr in a:bids
+    " Extract groups
+    let style_groups = s:filter_related(s:style_groups, fts, bufnr)
+    call s:Verbose("Updating: fts: %1, bufnr; %2", fts, bufnr)
+    for [gname, hows] in style_groups
+      call lh#assert#value(hows).not().empty()
+      " The numbers of matching policies for a given group may be > 1, e.g.
+      " - 1 policy for buffer=this
+      " - 1 policy for ft=cpp, buffer=*
+      " - 1 global policy ft=*, buffer=*
+      " The first is the most with the highest priority. We'll take options
+      " from this one an ignore other => "how[0]"
+      " call lh#assert#value(len(hows)).eq(1)
+      call lh#assert#value(hows[0]).has_key('_options')
+      call s:Verbose(" - grp:%1: update option %2 (from %3)", gname, hows[0]._options, hows[0].name)
+      let res += hows[0]._options
+    endfor
 
-  for opt in res
-    exe 'setlocal '.opt
+    for optassign in res
+      let [all, opt, val; _] = matchlist(optassign, '\v(\k+)(.*)')
+      call lh#option#update(bufnr, '&'.opt, val)
+    endfor
   endfor
-  return res
+endfunction
+
+function! lh#style#update_options(ft) abort
+  call s:update_options([bufnr('%')], a:ft)
 endfunction
 
 " Function: lh#style#_sort_styles(styles) {{{3
@@ -614,6 +626,7 @@ function! lh#style#define_group(kind, name, local_global, ft) abort
   endif
   call lh#assert#value(group).get('ft').eq(a:ft)
   call lh#assert#value(group).get('local').eq(local)
+  let group.kind         = a:kind
   let group.name         = a:name
   let group._definitions = {}
   let group._options     = []
@@ -630,16 +643,29 @@ endfunction
 
 function! s:register_options(...) dict abort
   call s:Verbose("Register to 'options': %1", a:000)
+  let self._options += a:000
   let cmd
         \ = self.local != -1  ? 'setlocal '
         \ : self.ft    == '*' ? 'set '
         \ :                     ''
-  if !empty(cmd)
+  if empty(cmd)
+    " Case where only ft is set, IOW: "any buffer of the selected ft"
+    if !exists('#LH_Style')
+      " Register the update for future buffers
+      augroup LH_Style
+        au!
+        au Filetype * call s:update_options([expand("<abuf")], expand("<amatch>"))
+      augroup END
+    endif
+    " Update the existing buffers
+    let bids = filter(range(1, bufnr('$')), 'getbufvar(v:val, "&ft") == self.ft')
+    call s:Verbose("Update options for %1, triggered by %2#%3", bids, self.name, self.kind)
+    call s:update_options(bids, self.ft)
+  else
     for opt in a:000
       execute cmd . opt
     endfor
   endif
-  let self._options += a:000
 endfunction
 
 " # Internals {{{2

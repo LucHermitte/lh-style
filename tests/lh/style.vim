@@ -6,7 +6,7 @@
 "               <URL:http://github.com/LucHermitte/lh-style/License.md>
 " Version:      1.0.0
 " Created:      14th Feb 2014
-" Last Update:  08th Mar 2021
+" Last Update:  09th Mar 2021
 "------------------------------------------------------------------------
 " Description:
 "       Unit tests for lh#style
@@ -561,7 +561,7 @@ function! s:Test_use_bbb_gnu() " #{{{3
     xnoremap <buffer><silent> ,if  <C-\><C-N>@=lh#style#surround('if(!cursorhere!){', '}!mark!', 0, 1, '', 1, 'if ')<CR>
     SetMarker <+ +>
     setlocal sw=2
-    AssertEqual(lh#style#update_options(&ft), ['cinoptions+={.5s'])
+    AssertMatch(&cinoptions, '{\.5s')
     SetBufferContent << trim EOF
     {
       if (cond) { foobar; }
@@ -897,7 +897,8 @@ function! s:Test_use_ibs_whitesmiths() " #{{{3
     xnoremap <buffer><silent> ,if  <C-\><C-N>@=lh#style#surround('if(!cursorhere!){', '}!mark!', 0, 1, '', 1, 'if ')<CR>
     SetMarker <+ +>
     setlocal sw=2
-    AssertEqual(lh#style#update_options(&ft), ['cinoptions+=f1s,{1s'])
+    AssertMatch(&cinoptions, '{1s')
+    AssertMatch(&cinoptions, 'f1s')
     SetBufferContent << trim EOF
     if (cond) { foobar; }
     EOF
@@ -944,7 +945,7 @@ function! s:Test_use_ibs_gnu() " #{{{3
     xnoremap <buffer><silent> ,if  <C-\><C-N>@=lh#style#surround('if(!cursorhere!){', '}!mark!', 0, 1, '', 1, 'if ')<CR>
     SetMarker <+ +>
     setlocal sw=2
-    AssertEqual(lh#style#update_options(&ft), ['cinoptions+={.5s'])
+    AssertMatch(&cinoptions, '{\.5s')
     SetBufferContent << trim EOF
     {
       if (cond) { foobar; }
