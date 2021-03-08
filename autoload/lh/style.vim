@@ -293,9 +293,12 @@ endfunction
 function! lh#style#surround(
       \ begin, end, isLine, isIndented, goback, mustInterpret, ...) range
   let styles = lh#style#get(&ft)
-  let [begin, end] = split(lh#style#apply_these(styles, a:begin.'§§'.a:end), '§§')
-  " let begin = lh#style#apply_these(styles, a:begin)
-  " let end   = lh#style#apply_these(styles, a:end)
+  " We need something after {begin} and something before {after} to make sure
+  " the style is applied on the whole text
+  " However, we cannot apply the style of the selected text as it may reformat
+  " comments or string that need to stay unchanged.
+  let begin = split(lh#style#apply_these(styles, a:begin.'§§'), '§§', 1)[0]
+  let end   = split(lh#style#apply_these(styles, '§§'.a:end),   '§§', 1)[1]
   return call(function('lh#map#surround'), [begin, end, a:isLine, a:isIndented, a:goback, a:mustInterpret]+a:000)
 endfunction
 
