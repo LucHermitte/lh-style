@@ -7,7 +7,7 @@
 " Version:      1.0.0
 let s:k_version = 100
 " Created:      12th Feb 2014
-" Last Update:  06th Sep 2019
+" Last Update:  08th Mar 2021
 "------------------------------------------------------------------------
 " Description:
 "       Functions related to help implement coding styles (e.g. Allman or K&R
@@ -161,7 +161,7 @@ function! lh#style#get(ft) abort
     " call lh#assert#value(len(hows)).eq(1)
     call lh#assert#value(hows[0]).has_key('_definitions')
     for [pattern, really_how] in items(hows[0]._definitions)
-      call s:Verbose("grp:%1: /%2/, hows: %2", gname, pattern, really_how)
+      call s:Verbose("grp:%1: /%2/, hows: %3", gname, pattern, really_how)
       let new_repl = {}
       let new_repl[pattern] = {'replacement': really_how.replacement, 'prio': really_how.priority}
       call extend(res, new_repl)
@@ -220,7 +220,9 @@ function! lh#style#apply_these(styles, text, ...) abort
   call lh#list#sort(styles, s:getSNR('cmp_e1_prio'))
   for [pattern, style] in styles
     " TODO: see whether a chained map() would be faster
-    let res = substitute(res, pattern, style.replacement, 'g')
+    let r2 = substitute(res, pattern, style.replacement, 'g')
+    call s:Verbose("%1 ---/%2/---(%3)--> %4", res, pattern, style, r2)
+    let res = r2
   endfor
   let res = call('lh#style#reinject_cached_ignored_matches', [res]+a:000)
   return res
@@ -269,8 +271,9 @@ endfunction
 function! lh#style#surround(
       \ begin, end, isLine, isIndented, goback, mustInterpret, ...) range
   let styles = lh#style#get(&ft)
-  let begin = lh#style#apply_these(styles, a:begin)
-  let end   = lh#style#apply_these(styles, a:end)
+  let [begin, end] = split(lh#style#apply_these(styles, a:begin.'§§'.a:end), '§§')
+  " let begin = lh#style#apply_these(styles, a:begin)
+  " let end   = lh#style#apply_these(styles, a:end)
   return call(function('lh#map#surround'), [begin, end, a:isLine, a:isIndented, a:goback, a:mustInterpret]+a:000)
 endfunction
 
@@ -300,12 +303,14 @@ endfunction
 "   - spaces_around_operators (true/hybrid/false) (see
 "   https://github.com/jedmao/codepainter/tree/master/test/cases)
 " * clang-format settings (https://clangformat.com/)
+"   - AlwaysBreakTemplateDeclarations
 "   - BreakBeforeBinaryOperators
 "   - BreakBeforeTernaryOperators
 "   - BreakConstructorInitializersBeforeComma (though one!!)
 "   - IndentCaseLabels
 "   - IndentFunctionDeclarationAfterType
 "   - NamespaceIndentation
+"   - SpaceAfterTemplateKeyword
 "   - SpaceBeforeAssignmentOperators
 "   - SpacesBeforeTrailingComments
 "   - SpacesInAngles
