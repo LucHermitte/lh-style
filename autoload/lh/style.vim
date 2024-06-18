@@ -7,7 +7,7 @@
 " Version:      1.0.0
 let s:k_version = 100
 " Created:      12th Feb 2014
-" Last Update:  05th Jul 2021
+" Last Update:  18th Jun 2024
 "------------------------------------------------------------------------
 " Description:
 "       Functions related to help implement coding styles (e.g. Allman or K&R
@@ -272,7 +272,7 @@ function! s:reinject_cached_ignored_matches(match, nl) abort
 endfunction
 
 function! lh#style#reinject_cached_ignored_matches(text, ...) abort
-  let s:cache_of_ignored_matches = get(a:, 1, get(s:, 'cache_of_ignored_matches', []))
+  let s:cache_of_ignored_matches = get(a:, 1, []) + get(s:, 'cache_of_ignored_matches', [])
   try
     if !empty(s:cache_of_ignored_matches)
       return substitute(a:text, '\v¤(\d+)¤(\n)=', '\=s:reinject_cached_ignored_matches(submatch(1), submatch(2))', 'g')
@@ -302,7 +302,9 @@ function! lh#style#just_ignore_this(text, ...) abort
   " get() requires the s:var to exist, hence the explicit test
   " let cache_of_ignored_matches = get(a:, 1, s:cache_of_ignored_matches)
   let cache_of_ignored_matches = (a:0 > 0) ? (a:1) : (s:cache_of_ignored_matches)
-  return "¤".(len(add(cache_of_ignored_matches, a:text))-1)."¤"
+  let res = "¤".(len(add(cache_of_ignored_matches, a:text))-1)."¤"
+  call s:Verbose("Ignoring %1 --> cache = %2", a:text, s:cache_of_ignored_matches)
+  return res
 endfunction
 
 " # lh-brackets Adapters for snippets {{{2
