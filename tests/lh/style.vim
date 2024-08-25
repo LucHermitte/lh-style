@@ -6,7 +6,7 @@
 "               <URL:http://github.com/LucHermitte/lh-style/License.md>
 " Version:      1.0.0
 " Created:      14th Feb 2014
-" Last Update:  09th Mar 2021
+" Last Update:  25th Aug 2024
 "------------------------------------------------------------------------
 " Description:
 "       Unit tests for lh#style
@@ -636,7 +636,7 @@ function! s:Test_use_ibs_kr() " #{{{3
   endtry
 endfunction
 
-function! s:Test_use_ibs_0tbs() " #{{{3
+function! s:Test_use_ibs_otbs() " #{{{3
   " int main(int argc, char *argv[])
   " {
   "     if (x < 0) {
@@ -661,7 +661,7 @@ function! s:Test_use_ibs_0tbs() " #{{{3
   try
     new " same ft
     set ft=cpp
-    call lh#style#use({"indent_brace_style": "0TBS"}, {"buffer": 1})
+    call lh#style#use({"indent_brace_style": "OTBS"}, {"buffer": 1})
     AssertEqual(lh#style#apply('class toto{toto};#').'#', "class toto\n{\ntoto\n};\n##")
     AssertEqual(lh#style#apply('class toto{toto};').'##', "class toto\n{\ntoto\n};##")
     AssertEqual(lh#style#apply('int main(){toto;}').'##', "int main()\n{\ntoto;\n}##")

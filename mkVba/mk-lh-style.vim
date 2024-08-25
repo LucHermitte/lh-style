@@ -48,4 +48,4 @@ addon-info.txt
 plugin/style.vim
 tests/lh/naming.vim
 tests/lh/style.vim
-VimFlavor
+Flavorfile

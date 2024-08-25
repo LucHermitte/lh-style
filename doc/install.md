@@ -28,11 +28,11 @@
     Bundle 'editorconfig/editorconfig-vim'
     ```
 
-  * Clone from the git repositories, and update your [`'runtimepath'`](http://vimhelp.appspot.com/options.txt.html#%27runtimepath%27)
+  * Clone from the git repositories, and update your ['runtimepath'](http://vimhelp.appspot.com/options.txt.html#%27runtimepath%27)
 
     ```bash
     git clone git@github.com:LucHermitte/lh-vim-lib.git
     git clone git@github.com:LucHermitte/lh-style.git
     # Optional
-    git clone git@github.com:editorconfig/editorconfig-vim'
+    git clone git@github.com:editorconfig/editorconfig-vim
     ```
