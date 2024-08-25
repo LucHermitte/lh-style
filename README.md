@@ -1,5 +1,13 @@
-# lh-style [![Last release](https://img.shields.io/github/tag/LucHermitte/lh-style.svg)](https://github.com/LucHermitte/lh-style/releases) [![Build Status](https://secure.travis-ci.org/LucHermitte/lh-style.png?branch=master)](http://travis-ci.org/LucHermitte/lh-style) [![Documentation Status](https://readthedocs.org/projects/lh-style/badge/?version=latest)](http://lh-style.readthedocs.io/en/latest/?badge=latest) [![Project Stats](https://www.openhub.net/p/21020/widgets/project_thin_badge.gif)](https://www.openhub.net/p/21020)
+# lh-style [![Last release][Releases-badge]][Releases-url] [![Build Status][gh-action-badge]][gh-action-result] [![Documentation Status][rtd-badge]][rtd-url] [![Project Stats][openhub-badge]][openhub-url]
 
+[Releases-badge]:   https://img.shields.io/github/tag/LucHermitte/lh-style.svg
+[Releases-url]:     https://github.com/LucHermitte/lh-style/tags
+[gh-action-badge]:  ./../../actions/workflows/tests.yml/badge.svg?branch=master "Test"
+[gh-action-result]: ./../../actions/workflows/tests.yml?query=branch%3Amaster
+[openhub-badge]:    https://www.openhub.net/p/21020/widgets/project_thin_badge.gif
+[openhub-url]:      https://www.openhub.net/p/21020
+[rtd-badge]:        https://readthedocs.org/projects/lh-style/badge/?version=latest
+[rtd-url]:          http://lh-style.readthedocs.io/en/latest/?badge=latest
 
 Discl. This page is currently under heavy reorganization!
 
@@ -69,27 +77,34 @@ Contributions are welcomed. I've yet to write a proper CONTRIBUTING.md guide reg
       * [editorconfig-vim](https://github.com/editorconfig/editorconfig-vim) (optional).
   * Install with [vim-addon-manager](https://github.com/MarcWeber/vim-addon-manager) any plugin that requires lh-style should be enough.
   * With [vim-addon-manager](https://github.com/MarcWeber/vim-addon-manager), install lh-style (this is the preferred method because of the [dependencies](http://github.com/LucHermitte/lh-style/blob/master/addon-info.txt)).
-```vim
-ActivateAddons lh-style
-" will also install editorconfig-vim
-```
+
+    ```vim
+    ActivateAddons lh-style
+    " will also install editorconfig-vim
+    ```
+
   * [vim-flavor](http://github.com/kana/vim-flavor) (which also supports
     dependencies)
-```
-flavor 'LucHermitte/lh-style'
-" will also install editorconfig-vim
-```
+
+    ```
+    flavor 'LucHermitte/lh-style'
+    " will also install editorconfig-vim
+    ```
+
   * Vundle/NeoBundle:
-```vim
-Bundle 'LucHermitte/lh-vim-lib'
-Bundle 'LucHermitte/lh-style'
-" Optional
-Bundle 'editorconfig/editorconfig-vim'
-```
+
+    ```vim
+    Bundle 'LucHermitte/lh-vim-lib'
+    Bundle 'LucHermitte/lh-style'
+    " Optional
+    Bundle 'editorconfig/editorconfig-vim'
+    ```
+
   * Clone from the git repositories
-```
-git clone git@github.com:LucHermitte/lh-vim-lib.git
-git clone git@github.com:LucHermitte/lh-style.git
-" Optional
-git clone git@github.com:editorconfig/editorconfig-vim'
-```
+
+    ```bash
+    git clone git@github.com:LucHermitte/lh-vim-lib.git
+    git clone git@github.com:LucHermitte/lh-style.git
+    " Optional
+    git clone git@github.com:editorconfig/editorconfig-vim'
+    ```
