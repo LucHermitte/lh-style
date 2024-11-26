@@ -7,7 +7,7 @@
 " Version:      1.0.0
 let s:k_version = 100
 " Created:      12th Feb 2014
-" Last Update:  18th Jun 2024
+" Last Update:  27th Nov 2024
 "------------------------------------------------------------------------
 " Description:
 "       Functions related to help implement coding styles (e.g. Allman or K&R
@@ -303,7 +303,7 @@ function! lh#style#just_ignore_this(text, ...) abort
   " let cache_of_ignored_matches = get(a:, 1, s:cache_of_ignored_matches)
   let cache_of_ignored_matches = (a:0 > 0) ? (a:1) : (s:cache_of_ignored_matches)
   let res = "¤".(len(add(cache_of_ignored_matches, a:text))-1)."¤"
-  call s:Verbose("Ignoring %1 --> cache = %2", a:text, s:cache_of_ignored_matches)
+  call s:Verbose("Ignoring %1 --> cache = %2", a:text, cache_of_ignored_matches)
   return res
 endfunction
 
