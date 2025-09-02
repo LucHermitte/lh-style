@@ -7,7 +7,7 @@
 " Version:	1.0.0
 let s:k_version = 100
 " Created:	05th Oct 2009
-" Last Update:	26th Jul 2019
+" Last Update:	02nd Sep 2025
 "------------------------------------------------------------------------
 " Description:
 " - Naming policies for programming styles
@@ -224,12 +224,21 @@ function! lh#naming#according_to_policy(parts, naming_policy) abort
   if empty(a:parts) | return "" | endif
   if type(a:parts) == type([])
     let parts = copy(a:parts)
-    let case = a:naming_policy == 'UpperCamelCase' ? '\u' : '\l'
-    let parts[0] = substitute(parts[0], '^.', case.'&', 'g')
-    let case = a:naming_policy =~ '.*CamelCase' ? '\u' : '\l'
-    let tail =  map(parts[1:], 'substitute(v:val, "^.", case."&", "g")')
-    let sep = a:naming_policy == 'snake_case' ? '_' : ''
-    let res = join([parts[0]] + tail, sep)
+    if a:naming_policy =~ 'shout.*'
+      call map(parts, 'substitute(v:val, ".*", "\\U&\\E", "")')
+    elseif a:naming_policy =~ '.*CamelCase'
+      let case = a:naming_policy == 'UpperCamelCase' ? '\u' : '\l'
+      let parts[0] = substitute(parts[0], '^.', case.'&', 'g')
+      let case = '\u'
+      let tail =  map(parts[1:], 'substitute(v:val, "^.", case."&", "g")')
+      let parts = [parts[0]] + tail
+    else
+      let case = '\l'
+      let tail =  map(parts[1:], 'substitute(v:val, "^.", case."&", "g")')
+      let parts = [parts[0]] + tail
+    endif
+    let sep = a:naming_policy =~ '.*snake_case' ? '_' : ''
+    let res = join(parts, sep)
     return res
   else " split at '_' and uppercases, and use this function again.
     let parts = split(a:parts, '\ze[A-Z]\|_')
@@ -250,14 +259,20 @@ LetIfUndef g:vim_naming_global_re    '\v%([algsbwt]:)=(.*)'
 LetIfUndef g:vim_naming_global_subst 'g:\1'
 
 " # Java, recommended coding style {{{2
-LetIfUndef g:java_naming_get_subst 'get\u&'
-LetIfUndef g:java_naming_set_subst 'set\u&'
-LetIfUndef g:java_naming_function  'lowerCamelCase'
-" # C#, recommended coding style  {{{2
-LetIfUndef g:cs_naming_get_subst   'Get\u&'
-LetIfUndef g:cs_naming_set_subst   'Set\u&'
-LetIfUndef g:cs_naming_function    'UpperCamelCase'
+LetIfUndef g:java_naming_get_subst   'get\u&'
+LetIfUndef g:java_naming_set_subst   'set\u&'
+LetIfUndef g:java_naming_function    'lowerCamelCase'
 
+" # C#, recommended coding style  {{{2
+LetIfUndef g:cs_naming_get_subst     'Get\u&'
+LetIfUndef g:cs_naming_set_subst     'Set\u&'
+LetIfUndef g:cs_naming_function      'UpperCamelCase'
+
+" # Python, recommended coding style  {{{2
+LetIfUndef g:python_naming_get_subst 'get_&'
+LetIfUndef g:python_naming_set_subst 'set_&'
+LetIfUndef g:python_naming_function  'snake_case'
+LetIfUndef g:python_naming_type      'UpperCamelCase'
 " }}}1
 "------------------------------------------------------------------------
 let &cpo=s:cpo_save
